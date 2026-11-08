@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Warehouses";
+}
+
+<div class="page-heading">
+    <div><h3>Warehouses</h3><p>Manage storage locations and warehouse capacity.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Warehouse</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Warehouse</th>
+                    <th>Code</th>
+                    <th>Location</th>
+                    <th>Manager</th>
+                    <th>Products Stored</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Main Warehouse</strong></td>
+                    <td>WH-001</td>
+                    <td>Dhaka</td>
+                    <td>Rahim Ahmed</td>
+                    <td>850</td>
+                    <td><span class="status success">Active</span></td>
+                    <td><a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Chattogram Warehouse</strong></td>
+                    <td>WH-002</td>
+                    <td>Chattogram</td>
+                    <td>Karim Hasan</td>
+                    <td>434</td>
+                    <td><span class="status success">Active</span></td>
+                    <td><a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

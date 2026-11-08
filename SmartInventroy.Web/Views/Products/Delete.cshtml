@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<div class="page-heading">
+    <div>
+        <h3>Delete Product</h3>
+        <p>Review the product before deleting it.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+
+<div class="content-card">
+    <div class="text-center py-4">
+        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 48px;"></i>
+        <h4 class="mt-3">Delete this product?</h4>
+        <p class="text-muted">You are about to delete Wireless Mouse (PRD-001).</p>
+        <p class="text-muted">This action may affect records linked to this product.</p>
+
+        <form class="mt-4">
+            <a asp-action="Index" class="btn btn-light">Cancel</a>
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Purchases";
+}
+
+<div class="page-heading">
+    <div><h3>Purchase Orders</h3><p>Track orders received from suppliers.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Purchase</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Purchase ID</th>
+                    <th>Supplier</th>
+                    <th>Order Date</th>
+                    <th>Expected Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PUR-0148</td>
+                    <td>Tech Distribution Ltd.</td>
+                    <td>09 Nov 2026</td>
+                    <td>12 Nov 2026</td>
+                    <td>৳42,500</td>
+                    <td><span class="status success">Received</span></td>
+                    <td><a asp-action="Details" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-eye"></i></a></td>
+                </tr>
+                <tr>
+                    <td>PUR-0149</td>
+                    <td>Global Electronics</td>
+                    <td>09 Nov 2026</td>
+                    <td>15 Nov 2026</td>
+                    <td>৳85,000</td>
+                    <td><span class="status warning">Pending</span></td>
+                    <td><a asp-action="Details" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

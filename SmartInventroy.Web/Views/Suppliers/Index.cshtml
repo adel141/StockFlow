@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<div class="page-heading">
+    <div><h3>Suppliers</h3><p>Manage your product suppliers.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Supplier</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Supplier</th>
+                    <th>Contact Person</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tech Distribution Ltd.</strong></td>
+                    <td>Rahim Ahmed</td>
+                    <td>sales@example.com</td>
+                    <td>01700000001</td>
+                    <td>Dhaka</td>
+                    <td><a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Global Electronics</strong></td>
+                    <td>Karim Hasan</td>
+                    <td>info@example.com</td>
+                    <td>01700000002</td>
+                    <td>Chattogram</td>
+                    <td><a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

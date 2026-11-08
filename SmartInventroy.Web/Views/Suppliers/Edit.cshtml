@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Edit Supplier";
+}
+
+<div class="page-heading">
+    <div><h3>Edit Supplier</h3><p>Update supplier contact information.</p></div>
+    <a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+
+<div class="content-card">
+    <form>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Company Name</label>
+                <input class="form-control" value="Tech Distribution Ltd." />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Contact Person</label>
+                <input class="form-control" value="Rahim Ahmed" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" value="sales@example.com" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Phone</label>
+                <input class="form-control" value="01700000001" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Address</label>
+                <input class="form-control" value="Motijheel" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">City</label>
+                <input class="form-control" value="Dhaka" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a asp-action="Index" class="btn btn-light">Cancel</a>
+            <button class="btn btn-primary">Update Supplier</button>
+        </div>
+    </form>
+</div>

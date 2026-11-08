@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div class="page-heading">
+    <div><h3>Add Category</h3><p>Create a new product category.</p></div>
+    <a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+
+<div class="content-card">
+    <form>
+        <div class="mb-3">
+            <label class="form-label">Category Name</label>
+            <input class="form-control" placeholder="Enter category name" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="4" placeholder="Category description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select">
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <a asp-action="Index" class="btn btn-light">Cancel</a>
+            <button class="btn btn-primary" type="submit">Save Category</button>
+        </div>
+    </form>
+</div>

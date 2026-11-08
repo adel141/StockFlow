@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="page-heading">
+    <div>
+        <h3>Product Details</h3>
+        <p>View complete product information.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="1" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+        <a asp-action="Index" class="btn btn-light">Back</a>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Wireless Mouse</h4>
+            <span class="text-muted">SKU: PRD-001</span>
+        </div>
+        <span class="status success">Active</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <small class="text-muted">Category</small>
+            <p>Accessories</p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Supplier</small>
+            <p>Tech Distribution Ltd.</p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Purchase Price</small>
+            <p>৳600</p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Selling Price</small>
+            <p>৳850</p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Available Stock</small>
+            <p>120 Pieces</p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Minimum Stock Level</small>
+            <p>15 Pieces</p>
+        </div>
+        <div class="col-12">
+            <small class="text-muted">Description</small>
+            <p>Wireless optical mouse with USB receiver.</p>
+        </div>
+    </div>
+</div>

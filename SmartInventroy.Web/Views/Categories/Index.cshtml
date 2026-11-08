@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="page-heading">
+    <div>
+        <h3>Categories</h3>
+        <p>Organize products into categories.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Category</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Products</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Electronics</td>
+                    <td>Electronic devices and equipment</td>
+                    <td>42</td>
+                    <td><span class="status success">Active</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Accessories</td>
+                    <td>Computer and device accessories</td>
+                    <td>86</td>
+                    <td><span class="status success">Active</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Furniture</td>
+                    <td>Office furniture and equipment</td>
+                    <td>24</td>
+                    <td><span class="status success">Active</span></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="3" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

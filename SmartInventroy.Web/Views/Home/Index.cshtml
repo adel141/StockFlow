@@ -1,0 +1,207 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-heading">
+
+    <div>
+        <h3>Welcome back, Admin 👋</h3>
+        <p>Here's what's happening with your inventory today.</p>
+    </div>
+
+    <a asp-controller="Products"
+       asp-action="Create"
+       class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i>
+        Add Product
+    </a>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="bi bi-box"></i>
+            </div>
+
+            <p>Total Products</p>
+            <h3>1,284</h3>
+            <small>Products in system</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="bi bi-wallet2"></i>
+            </div>
+
+            <p>Inventory Value</p>
+            <h3>৳ 8.42M</h3>
+            <small>Current stock valuation</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="bi bi-cart-plus"></i>
+            </div>
+
+            <p>Purchase Orders</p>
+            <h3>36</h3>
+            <small>12 awaiting receipt</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon red">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+            <p>Low Stock Items</p>
+            <h3>09</h3>
+            <small>Requires attention</small>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-lg-8">
+
+        <div class="content-card">
+
+            <div class="card-heading">
+                <div>
+                    <h5>Recent Transactions</h5>
+                    <p>Latest inventory activities</p>
+                </div>
+
+                <a asp-controller="Transactions"
+                   asp-action="Index">
+                    View All
+                </a>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Activity</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>PUR-0148</td>
+                            <td>Purchase Received</td>
+                            <td>09 Nov 2026</td>
+                            <td>
+                                <span class="status success">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>৳42,500</td>
+                        </tr>
+
+                        <tr>
+                            <td>SAL-0321</td>
+                            <td>Sales Order</td>
+                            <td>09 Nov 2026</td>
+                            <td>
+                                <span class="status warning">
+                                    Processing
+                                </span>
+                            </td>
+                            <td>৳18,200</td>
+                        </tr>
+
+                        <tr>
+                            <td>ADJ-0027</td>
+                            <td>Stock Adjustment</td>
+                            <td>08 Nov 2026</td>
+                            <td>
+                                <span class="status success">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>—</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="content-card">
+
+            <div class="card-heading">
+                <div>
+                    <h5>Stock Overview</h5>
+                    <p>Current product availability</p>
+                </div>
+            </div>
+
+            <div class="stock-item">
+                <span>In Stock</span>
+                <strong>1,184</strong>
+            </div>
+
+            <div class="progress mb-4">
+                <div class="progress-bar bg-success"
+                     style="width:92%">
+                </div>
+            </div>
+
+            <div class="stock-item">
+                <span>Low Stock</span>
+                <strong>76</strong>
+            </div>
+
+            <div class="progress mb-4">
+                <div class="progress-bar bg-warning"
+                     style="width:6%">
+                </div>
+            </div>
+
+            <div class="stock-item">
+                <span>Out of Stock</span>
+                <strong>24</strong>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar bg-danger"
+                     style="width:2%">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
