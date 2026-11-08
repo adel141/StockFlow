@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<div class="page-heading">
+    <div><h3>Stock Transactions</h3><p>View the history of inventory movements.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Record Transaction</a>
+</div>
+
+<div class="content-card">
+    <div class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input class="form-control" placeholder="Search transaction..." />
+        </div>
+        <div class="col-md-3">
+            <select class="form-select">
+                <option>All Transaction Types</option>
+                <option>Purchase</option>
+                <option>Sale</option>
+                <option>Adjustment</option>
+                <option>Transfer</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-secondary w-100">Filter</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr><th>Transaction ID</th><th>Product</th><th>Type</th><th>Warehouse</th><th>Quantity</th><th>Date</th><th>Reference</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TRX-1001</td>
+                    <td>Wireless Mouse</td>
+                    <td><span class="status success">Purchase</span></td>
+                    <td>Main Warehouse</td>
+                    <td class="text-success">+50</td>
+                    <td>09 Nov 2026</td>
+                    <td>PUR-0148</td>
+                </tr>
+                <tr>
+                    <td>TRX-1002</td>
+                    <td>Mechanical Keyboard</td>
+                    <td><span class="status warning">Sale</span></td>
+                    <td>Main Warehouse</td>
+                    <td class="text-danger">-10</td>
+                    <td>09 Nov 2026</td>
+                    <td>SAL-0321</td>
+                </tr>
+                <tr>
+                    <td>TRX-1003</td>
+                    <td>LED Monitor 24"</td>
+                    <td><span class="status warning">Adjustment</span></td>
+                    <td>Main Warehouse</td>
+                    <td class="text-success">+5</td>
+                    <td>08 Nov 2026</td>
+                    <td>ADJ-0027</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

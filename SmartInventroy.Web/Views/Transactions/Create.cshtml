@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Record Transaction";
+}
+
+<div class="page-heading">
+    <div><h3>Record Stock Transaction</h3><p>Record a manual inventory movement.</p></div>
+    <a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+
+<div class="content-card">
+    <form>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Transaction Type</label>
+                <select class="form-select">
+                    <option>Stock In</option>
+                    <option>Stock Out</option>
+                    <option>Transfer</option>
+                    <option>Adjustment</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Product</label>
+                <select class="form-select">
+                    <option>Select product</option>
+                    <option>Wireless Mouse</option>
+                    <option>Mechanical Keyboard</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Source Warehouse</label>
+                <select class="form-select">
+                    <option>Main Warehouse</option>
+                    <option>Chattogram Warehouse</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Destination Warehouse</label>
+                <select class="form-select">
+                    <option>None / Not applicable</option>
+                    <option>Main Warehouse</option>
+                    <option>Chattogram Warehouse</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" min="1" placeholder="Enter quantity" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Transaction Date</label>
+                <input type="date" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Remarks</label>
+                <textarea class="form-control" rows="3" placeholder="Transaction notes"></textarea>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a asp-action="Index" class="btn btn-light">Cancel</a>
+            <button class="btn btn-primary">Save Transaction</button>
+        </div>
+    </form>
+</div>

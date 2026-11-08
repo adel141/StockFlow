@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Stock Adjustment";
+}
+
+<div class="page-heading">
+    <div><h3>Stock Adjustment</h3><p>Record a manual inventory correction.</p></div>
+    <a asp-action="Index" class="btn btn-light">Back to Inventory</a>
+</div>
+
+<div class="content-card">
+    <form>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Warehouse</label>
+                <select class="form-select">
+                    <option>Main Warehouse</option>
+                    <option>Chattogram Warehouse</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Product</label>
+                <select class="form-select">
+                    <option>Select product</option>
+                    <option>Wireless Mouse</option>
+                    <option>LED Monitor 24"</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Adjustment Type</label>
+                <select class="form-select">
+                    <option>Stock Increase</option>
+                    <option>Stock Decrease</option>
+                    <option>Correction</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" min="1" placeholder="Enter quantity" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Adjustment Date</label>
+                <input type="date" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Reference Number</label>
+                <input class="form-control" placeholder="Optional reference" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Reason for Adjustment</label>
+                <textarea class="form-control" rows="4" placeholder="Explain why this adjustment is required"></textarea>
+            </div>
+        </div>
+        <div class="alert alert-warning mt-4">
+            <i class="bi bi-exclamation-triangle"></i>
+            Stock adjustments affect the warehouse's available inventory. Make sure the information is correct.
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <a asp-action="Index" class="btn btn-light">Cancel</a>
+            <button class="btn btn-primary">Submit Adjustment</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<div class="page-heading">
+    <div><h3>Inventory Overview</h3><p>Monitor stock quantities across warehouses.</p></div>
+    <a asp-action="Adjust" class="btn btn-primary"><i class="bi bi-sliders"></i> Adjust Stock</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <p>Total Stock Units</p><h3>12,480</h3><small>Across all warehouses</small>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <p>Low Stock Products</p><h3>76</h3><small>Below minimum level</small>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <p>Out of Stock</p><h3>24</h3><small>Require replenishment</small>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-between mb-3">
+        <h5>Stock Levels</h5>
+        <select class="form-select" style="max-width:220px;">
+            <option>All Warehouses</option>
+            <option>Main Warehouse</option>
+            <option>Chattogram Warehouse</option>
+        </select>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr><th>Product</th><th>SKU</th><th>Warehouse</th><th>Available</th><th>Minimum Level</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Wireless Mouse</td>
+                    <td>PRD-001</td>
+                    <td>Main Warehouse</td>
+                    <td>120</td>
+                    <td>15</td>
+                    <td><span class="status success">In Stock</span></td>
+                    <td><a asp-action="Adjust" class="btn btn-sm btn-light"><i class="bi bi-sliders"></i></a></td>
+                </tr>
+                <tr>
+                    <td>LED Monitor 24"</td>
+                    <td>PRD-003</td>
+                    <td>Main Warehouse</td>
+                    <td>8</td>
+                    <td>20</td>
+                    <td><span class="status warning">Low Stock</span></td>
+                    <td><a asp-action="Adjust" class="btn btn-sm btn-light"><i class="bi bi-sliders"></i></a></td>
+                </tr>
+                <tr>
+                    <td>USB Hub</td>
+                    <td>PRD-004</td>
+                    <td>Chattogram Warehouse</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td><span class="status warning">Out of Stock</span></td>
+                    <td><a asp-action="Adjust" class="btn btn-sm btn-light"><i class="bi bi-sliders"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="page-heading">
+    <div><h3>User Management</h3><p>Manage system users and their roles.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus"></i> Add User</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr><th>Name</th><th>Email</th><th>Username</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Admin User</td>
+                    <td>admin@example.com</td>
+                    <td>admin</td>
+                    <td>Administrator</td>
+                    <td><span class="status success">Active</span></td>
+                    <td><a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+                <tr>
+                    <td>Rahim Ahmed</td>
+                    <td>rahim@example.com</td>
+                    <td>rahim</td>
+                    <td>Manager</td>
+                    <td><span class="status success">Active</span></td>
+                    <td><a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+                <tr>
+                    <td>Karim Hasan</td>
+                    <td>karim@example.com</td>
+                    <td>karim</td>
+                    <td>Staff</td>
+                    <td><span class="status warning">Inactive</span></td>
+                    <td><a asp-action="Edit" asp-route-id="3" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

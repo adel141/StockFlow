@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<div class="page-heading">
+    <div><h3>Sales Orders</h3><p>Manage customer sales and order fulfillment.</p></div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Sale</a>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr><th>Sale ID</th><th>Customer</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SAL-0321</td>
+                    <td>ABC Corporation</td>
+                    <td>09 Nov 2026</td>
+                    <td>4</td>
+                    <td>৳18,200</td>
+                    <td><span class="status warning">Processing</span></td>
+                    <td><a asp-action="Details" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-eye"></i></a></td>
+                </tr>
+                <tr>
+                    <td>SAL-0320</td>
+                    <td>XYZ Enterprise</td>
+                    <td>08 Nov 2026</td>
+                    <td>2</td>
+                    <td>৳12,500</td>
+                    <td><span class="status success">Completed</span></td>
+                    <td><a asp-action="Details" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
