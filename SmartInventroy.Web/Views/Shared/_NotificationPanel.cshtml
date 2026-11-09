@@ -1,0 +1,26 @@
+@model List<SmartInventory.Model.OperationsDto.StockRowDto>
+<div class="notification-panel-content" data-count="@Model.Count">
+ <div class="notification-panel-heading">
+<strong>Notifications</strong>
+<span class="badge text-bg-danger">@Model.Count low stock</span>
+</div>
+ @if (!Model.Any()) { <div class="notification-empty">
+<i class="bi bi-check-circle text-success">
+</i>
+<span>All stock levels look good.</span>
+</div> }
+ else { <div class="notification-list">@foreach (var item in Model.Take(8)) { <a asp-controller="Inventory" asp-action="Index" class="notification-item">
+<span class="notification-warning">
+<i class="bi bi-exclamation-triangle-fill">
+</i>
+</span>
+<span class="notification-copy">
+<strong>@item.ProductName</strong>
+<small>@item.WarehouseName · @item.Quantity left (reorder at @item.ReorderLevel)</small>
+</span>
+<span class="badge text-bg-danger">Low</span>
+</a> }</div>
+<a asp-controller="Inventory" asp-action="Index" class="notification-footer">View inventory <i class="bi bi-arrow-right">
+</i>
+</a> }
+</div>

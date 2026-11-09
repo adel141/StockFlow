@@ -1,3 +1,4 @@
+<div class="d-flex justify-content-end mb-3 no-print"><button type="button" class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer"></i> Print</button></div>
 @{
     ViewData["Title"] = "Product Details";
 }
@@ -13,12 +14,14 @@
         </div>
         <p>
             <a asp-action="Index" class="btn btn-outline-secondary gap-4">
-                <i class="bi bi-arrow-left"></i>
+                <i class="bi bi-arrow-left">
+</i>
                 Back to Products
             </a>
 
             <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-outline-primary">
-                <i class="bi bi-pencil"></i>Edit Product
+                <i class="bi bi-pencil">
+</i>Edit Product
             </a>
         </p>
 

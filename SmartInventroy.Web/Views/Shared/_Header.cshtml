@@ -1,44 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
 <header class="topbar">
-
-    <div class="header-left">
-
-        <button class="icon-button" id="sidebarToggle">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <div>
-            <h5>@ViewData["Title"]</h5>
-            <small>Inventory Management Workspace</small>
-        </div>
-
-    </div>
-
-    <div class="header-right">
-
-        <button class="icon-button notification-button">
-            <i class="bi bi-bell"></i>
-            <span class="notification-dot"></span>
-        </button>
-
-        <div class="profile">
-
-            <div class="user-avatar">AD</div>
-
-            <div class="profile-details">
-                <strong>Admin User</strong>
-                <small>Administrator</small>
-            </div>
-
-            <i class="bi bi-chevron-down"></i>
-
-        </div>
-
-    </div>
-
+ <div class="header-left">
+<button class="icon-button" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+<i class="bi bi-list">
+</i>
+</button>
+<div>
+<h5>@ViewData["Title"]</h5>
+<small>Inventory Management Workspace</small>
+</div>
+</div>
+ <div class="header-right">
+  <div class="notification-wrap">
+<button class="icon-button notification-button" id="notificationToggle" type="button" aria-label="Notifications" aria-expanded="false">
+<i class="bi bi-bell">
+</i>
+<span class="notification-count" id="notificationCount" hidden>0</span>
+</button>
+<div class="notification-popover" id="notificationPopover" hidden>
+<div class="notification-loading">Loading notifications…</div>
+</div>
+</div>
+  <div class="profile">
+<div class="user-avatar">@((User.Identity?.Name ?? "U").Substring(0,1).ToUpper())</div>
+<div class="profile-details">
+<strong>@User.Identity?.Name</strong>
+<small>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</small>
+</div>
+</div>
+  <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+<button class="btn btn-sm btn-outline-secondary" type="submit" title="Sign out">
+<i class="bi bi-box-arrow-right">
+</i>
+<span class="d-none d-lg-inline ms-1">Sign out</span>
+</button>
+</form>
+ </div>
 </header>

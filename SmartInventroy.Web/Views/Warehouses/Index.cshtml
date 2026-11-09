@@ -1,8 +1,46 @@
 @model IEnumerable<SmartInventory.Model.CrudDto.WarehouseDto>
 @{ ViewData["Title"]="Warehouses"; }
-<div class="page-heading"><div><h3>Warehouses</h3><p>Manage warehouses records.</p></div><a asp-action="Create" class="btn btn-primary">Add Warehouse</a></div>
+<div class="page-heading">
+<div>
+<h3>Warehouses</h3>
+<p>Manage warehouses records.</p>
+</div>
+<a asp-action="Create" class="btn btn-primary">Add Warehouse</a>
+</div>
 @if(TempData["Success"]!=null){<div class="alert alert-success">@TempData["Success"]</div>} @if(TempData["Error"]!=null){<div class="alert alert-danger">@TempData["Error"]</div>}
-<div class="content-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Warehouse Name</th><th>Location</th><th>Manager Name</th><th>Phone</th><th>Active</th><th>Products</th><th>Actions</th></tr></thead><tbody>
-@foreach(var item in Model){<tr><td>@item.WarehouseName</td><td>@item.Location</td><td>@item.ManagerName</td><td>@item.Phone</td><td>@(item.IsActive ? "Active" : "Inactive")</td><td>@item.ProductCount</td><td><a asp-action="Edit" asp-route-id="@item.WarehouseId" class="btn btn-sm btn-light">Edit</a><form asp-action="Delete" asp-route-id="@item.WarehouseId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td></tr>}
-@if(!Model.Any()){<tr><td colspan="10" class="text-center text-muted">No records found.</td></tr>}
-</tbody></table></div></div>
+<div class="content-card">
+<div class="table-responsive">
+<table class="js-data-table table align-middle">
+<thead>
+<tr>
+<th>Warehouse Name</th>
+<th>Location</th>
+<th>Manager Name</th>
+<th>Phone</th>
+<th>Active</th>
+<th>Products</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+@foreach(var item in Model){<tr>
+<td>@item.WarehouseName</td>
+<td>@item.Location</td>
+<td>@item.ManagerName</td>
+<td>@item.Phone</td>
+<td>@(item.IsActive ? "Active" : "Inactive")</td>
+<td>@item.ProductCount</td>
+<td>
+<a asp-action="Details" asp-route-id="@item.WarehouseId" class="btn btn-sm btn-outline-info">Details</a> <a asp-action="Edit" asp-route-id="@item.WarehouseId" class="btn btn-sm btn-light">Edit</a>
+<form asp-action="Delete" asp-route-id="@item.WarehouseId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');">
+<button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+</form>
+</td>
+</tr>}
+@if(!Model.Any()){<tr>
+<td colspan="10" class="text-center text-muted">No records found.</td>
+</tr>}
+</tbody>
+</table>
+</div>
+</div>

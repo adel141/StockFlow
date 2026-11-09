@@ -1,8 +1,42 @@
 @model IEnumerable<SmartInventory.Model.CrudDto.CustomerDto>
 @{ ViewData["Title"]="Customers"; }
-<div class="page-heading"><div><h3>Customers</h3><p>Manage customers records.</p></div><a asp-action="Create" class="btn btn-primary">Add Customer</a></div>
+<div class="page-heading">
+<div>
+<h3>Customers</h3>
+<p>Manage customers records.</p>
+</div>
+<a asp-action="Create" class="btn btn-primary">Add Customer</a>
+</div>
 @if(TempData["Success"]!=null){<div class="alert alert-success">@TempData["Success"]</div>} @if(TempData["Error"]!=null){<div class="alert alert-danger">@TempData["Error"]</div>}
-<div class="content-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Customer Name</th><th>Email</th><th>Phone</th><th>Sales Orders</th><th>Actions</th></tr></thead><tbody>
-@foreach(var item in Model){<tr><td>@item.CustomerName</td><td>@item.Email</td><td>@item.Phone</td><td>@item.SalesOrderCount</td><td><a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-light">Edit</a><form asp-action="Delete" asp-route-id="@item.CustomerId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td></tr>}
-@if(!Model.Any()){<tr><td colspan="10" class="text-center text-muted">No records found.</td></tr>}
-</tbody></table></div></div>
+<div class="content-card">
+<div class="table-responsive">
+<table class="js-data-table table align-middle">
+<thead>
+<tr>
+<th>Customer Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Sales Orders</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+@foreach(var item in Model){<tr>
+<td>@item.CustomerName</td>
+<td>@item.Email</td>
+<td>@item.Phone</td>
+<td>@item.SalesOrderCount</td>
+<td>
+<a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-sm btn-outline-info">Details</a> <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-light">Edit</a>
+<form asp-action="Delete" asp-route-id="@item.CustomerId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');">
+<button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+</form>
+</td>
+</tr>}
+@if(!Model.Any()){<tr>
+<td colspan="10" class="text-center text-muted">No records found.</td>
+</tr>}
+</tbody>
+</table>
+</div>
+</div>

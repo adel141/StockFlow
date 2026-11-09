@@ -1,113 +1,116 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    var role = (User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "").ToLowerInvariant();
+    var isAdmin = role.Contains("admin");
+    var canManage = isAdmin || role.Contains("manager");
+    var canInventory = isAdmin || canManage || role.Contains("inventory") || role.Contains("warehouse") || role.Contains("stock") || role.Contains("store");
+    var canPurchase = isAdmin || canManage || role.Contains("purchase") || role.Contains("procurement");
+    var canSales = isAdmin || canManage || role.Contains("sales");
+    var canViewReports = isAdmin || canManage || role.Contains("report") || role.Contains("viewer");
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
 }
-
 <aside class="sidebar" id="appSidebar">
-
-    <a class="brand" asp-controller="Home" asp-action="Index">
-        <span class="brand-icon">
-            <i class="bi bi-box-seam"></i>
-        </span>
-        <span>StockFlow</span>
-    </a>
-
-    <div class="sidebar-content">
-
-        <div class="nav-caption">WORKSPACE</div>
-
-        <nav class="sidebar-nav">
-
-            <a asp-controller="Home" asp-action="Index" class="side-link">
-                <i class="bi bi-grid-1x2"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a asp-controller="Products" asp-action="Index" class="side-link">
-                <i class="bi bi-box"></i>
-                <span>Products</span>
-            </a>
-
-            <a asp-controller="Categories" asp-action="Index" class="side-link">
-                <i class="bi bi-tags"></i>
-                <span>Categories</span>
-            </a>
-
-            <a asp-controller="Suppliers" asp-action="Index" class="side-link">
-                <i class="bi bi-truck"></i>
-                <span>Suppliers</span>
-            </a>
-
-            <a asp-controller="Customers" asp-action="Index" class="side-link">
-                <i class="bi bi-people"></i>
-                <span>Customers</span>
-            </a>
-
-            <a asp-controller="Warehouses" asp-action="Index" class="side-link">
-                <i class="bi bi-building"></i>
-                <span>Warehouses</span>
-            </a>
-
-        </nav>
-
-        <div class="nav-caption">OPERATIONS</div>
-
-        <nav class="sidebar-nav">
-
-            <a asp-controller="Purchases" asp-action="Index" class="side-link">
-                <i class="bi bi-cart-plus"></i>
-                <span>Purchases</span>
-            </a>
-
-            <a asp-controller="Sales" asp-action="Index" class="side-link">
-                <i class="bi bi-receipt"></i>
-                <span>Sales</span>
-            </a>
-
-            <a asp-controller="Inventory" asp-action="Index" class="side-link">
-                <i class="bi bi-boxes"></i>
-                <span>Inventory</span>
-            </a>
-
-            <a asp-controller="Transactions" asp-action="Index" class="side-link">
-                <i class="bi bi-arrow-left-right"></i>
-                <span>Transactions</span>
-            </a>
-
-        </nav>
-
-        <div class="nav-caption">SYSTEM</div>
-
-        <nav class="sidebar-nav">
-
-            <a asp-controller="Reports" asp-action="Index" class="side-link">
-                <i class="bi bi-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-
-            <a asp-controller="Users" asp-action="Index" class="side-link">
-                <i class="bi bi-person-gear"></i>
-                <span>User Management</span>
-            </a>
-
-            <a asp-controller="Settings" asp-action="Index" class="side-link">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-
-        </nav>
-
-    </div>
-
-    <div class="sidebar-bottom">
-        <div class="user-avatar">AD</div>
-
-        <div>
-            <strong>Admin User</strong>
-            <small>Administrator</small>
-        </div>
-
-    </div>
-
+ <a class="brand" asp-controller="Home" asp-action="Index">
+<span class="brand-icon">
+<i class="bi bi-box-seam">
+</i>
+</span>
+<span>StockFlow</span>
+</a>
+ <div class="sidebar-content">
+  <div class="nav-caption">WORKSPACE</div>
+<nav class="sidebar-nav">
+   <a asp-controller="Home" asp-action="Index" class="side-link @(currentController=="Home"?"active":"")">
+<i class="bi bi-grid-1x2">
+</i>
+<span>Dashboard</span>
+</a>
+   @if (isAdmin || canInventory || canPurchase || canSales) {
+    <a asp-controller="Products" asp-action="Index" class="side-link @(currentController=="Products"?"active":"")">
+<i class="bi bi-box">
+</i>
+<span>Products</span>
+</a>
+    <a asp-controller="Categories" asp-action="Index" class="side-link @(currentController=="Categories"?"active":"")">
+<i class="bi bi-tags">
+</i>
+<span>Categories</span>
+</a>
+    <a asp-controller="Warehouses" asp-action="Index" class="side-link @(currentController=="Warehouses"?"active":"")">
+<i class="bi bi-building">
+</i>
+<span>Warehouses</span>
+</a>
+   }
+   @if (isAdmin || canPurchase) { <a asp-controller="Suppliers" asp-action="Index" class="side-link @(currentController=="Suppliers"?"active":"")">
+<i class="bi bi-truck">
+</i>
+<span>Suppliers</span>
+</a> }
+   @if (isAdmin || canSales) { <a asp-controller="Customers" asp-action="Index" class="side-link @(currentController=="Customers"?"active":"")">
+<i class="bi bi-people">
+</i>
+<span>Customers</span>
+</a> }
+  </nav>
+  <div class="nav-caption">OPERATIONS</div>
+<nav class="sidebar-nav">
+   @if (isAdmin || canPurchase) { <a asp-controller="Purchases" asp-action="Index" class="side-link @(currentController=="Purchases"?"active":"")">
+<i class="bi bi-cart-plus">
+</i>
+<span>Purchases</span>
+</a> }
+   @if (isAdmin || canSales) { <a asp-controller="Sales" asp-action="Index" class="side-link @(currentController=="Sales"?"active":"")">
+<i class="bi bi-receipt">
+</i>
+<span>Sales</span>
+</a> }
+   @if (isAdmin || canInventory) {
+    <a asp-controller="Inventory" asp-action="Index" class="side-link @(currentController=="Inventory"?"active":"")">
+<i class="bi bi-boxes">
+</i>
+<span>Inventory</span>
+</a>
+    <a asp-controller="Transactions" asp-action="Index" class="side-link @(currentController=="Transactions"?"active":"")">
+<i class="bi bi-arrow-left-right">
+</i>
+<span>Transactions</span>
+</a>
+   }
+  </nav>
+  @if (isAdmin || canViewReports) {
+   <div class="nav-caption">INSIGHTS</div>
+<nav class="sidebar-nav">
+<a asp-controller="Reports" asp-action="Index" class="side-link @(currentController=="Reports"?"active":"")">
+<i class="bi bi-bar-chart">
+</i>
+<span>Reports</span>
+</a>
+</nav>
+  }
+  @if (isAdmin) {
+   <div class="nav-caption">ADMINISTRATION</div>
+<nav class="sidebar-nav">
+    <a asp-controller="Users" asp-action="Index" class="side-link @(currentController=="Users"?"active":"")">
+<i class="bi bi-person-gear">
+</i>
+<span>User Management</span>
+</a>
+    <a asp-controller="Settings" asp-action="Index" class="side-link @(currentController=="Settings"?"active":"")">
+<i class="bi bi-gear">
+</i>
+<span>Settings</span>
+</a>
+   </nav>
+  }
+ </div>
+ <div class="sidebar-bottom">
+<div class="user-avatar">@((User.Identity?.Name ?? "U").Substring(0,1).ToUpper())</div>
+<div class="sidebar-user">
+<strong>@User.Identity?.Name</strong>
+<small>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</small>
+</div>
+<form asp-controller="Account" asp-action="Logout" method="post" class="sidebar-logout-form">
+    <button type="submit" class="sidebar-logout" title="Sign out" aria-label="Sign out"><i class="bi bi-box-arrow-right"></i></button>
+</form>
+</div>
 </aside>

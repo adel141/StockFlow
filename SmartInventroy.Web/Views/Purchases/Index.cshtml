@@ -1,3 +1,38 @@
 @model List<SmartInventory.Model.OperationsDto.OrderRowDto>
 @{ViewData["Title"]="Purchases";}
-<div class="page-heading"><div><h3>Purchase Orders</h3><p>Supplier purchases and received stock.</p></div><a asp-action="Create" class="btn btn-primary">New Purchase</a></div><div class="content-card"><div class="table-responsive"><table class="table"><thead><tr><th>Order</th><th>Date</th><th>Supplier</th><th>Warehouse</th><th>Status</th><th>Total</th><th></th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.Number</td><td>@x.Date.ToString("dd MMM yyyy")</td><td>@x.PartyName</td><td>@x.WarehouseName</td><td>@x.Status</td><td>@x.Total.ToString("N2")</td><td><a asp-action="Details" asp-route-id="@x.Id">Details</a></td></tr>}</tbody></table></div></div>
+<div class="page-heading">
+<div>
+<h3>Purchase Orders</h3>
+<p>Supplier purchases and received stock.</p>
+</div>
+<a asp-action="Create" class="btn btn-primary">New Purchase</a>
+</div>
+<div class="content-card">
+<div class="table-responsive">
+<table class="js-data-table table">
+<thead>
+<tr>
+<th>Order</th>
+<th>Date</th>
+<th>Supplier</th>
+<th>Warehouse</th>
+<th>Status</th>
+<th>Total</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody>@foreach(var x in Model){<tr>
+<td>@x.Number</td>
+<td>@x.Date.ToString("dd MMM yyyy")</td>
+<td>@x.PartyName</td>
+<td>@x.WarehouseName</td>
+<td>@x.Status</td>
+<td>@x.Total.ToString("N2")</td>
+<td>
+<a asp-action="Details" asp-route-id="@x.Id">Details</a>
+</td>
+</tr>}</tbody>
+</table>
+</div>
+</div>

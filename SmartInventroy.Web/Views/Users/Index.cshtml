@@ -1,3 +1,38 @@
 @model List<SmartInventory.Model.OperationsDto.UserDto>
 @{ViewData["Title"]="Users";}
-<div class="page-heading"><div><h3>Users</h3><p>Manage application accounts and roles.</p></div><a asp-action="Create" class="btn btn-primary">Add User</a></div><div class="content-card"><div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.FullName</td><td>@x.Username</td><td>@x.Email</td><td>@x.RoleName</td><td>@(x.IsActive?"Active":"Inactive")</td><td><a asp-action="Edit" asp-route-id="@x.UserId" class="btn btn-sm btn-light">Edit</a><form asp-action="Delete" asp-route-id="@x.UserId" method="post" class="d-inline" onsubmit="return confirm('Delete this user?')"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>}</tbody></table></div></div>
+<div class="page-heading">
+<div>
+<h3>Users</h3>
+<p>Manage application accounts and roles.</p>
+</div>
+<a asp-action="Create" class="btn btn-primary">Add User</a>
+</div>
+<div class="content-card">
+<div class="table-responsive">
+<table class="js-data-table table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>@foreach(var x in Model){<tr>
+<td>@x.FullName</td>
+<td>@x.Username</td>
+<td>@x.Email</td>
+<td>@x.RoleName</td>
+<td>@(x.IsActive?"Active":"Inactive")</td>
+<td>
+<a asp-action="Details" asp-route-id="@x.UserId" class="btn btn-sm btn-outline-info">Details</a> <a asp-action="Edit" asp-route-id="@x.UserId" class="btn btn-sm btn-light">Edit</a>
+<form asp-action="Delete" asp-route-id="@x.UserId" method="post" class="d-inline" onsubmit="return confirm('Delete this user?')">
+<button class="btn btn-sm btn-outline-danger">Delete</button>
+</form>
+</td>
+</tr>}</tbody>
+</table>
+</div>
+</div>

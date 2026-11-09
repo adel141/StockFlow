@@ -1,7 +1,94 @@
 @model SmartInventory.Model.OperationsDto.DashboardDto
 @{ViewData["Title"]="Reports";var stock=(List<SmartInventory.Model.OperationsDto.StockRowDto>)ViewBag.Stock;var purchases=(List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Purchases;var sales=(List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Sales;}
-<div class="page-heading"><div><h3>Reports</h3><p>Current operational summaries.</p></div><button class="btn btn-light" onclick="window.print()">Print Report</button></div>
-<div class="row g-3"><div class="col-md-3"><div class="content-card"><small>Products</small><h3>@Model.ProductCount</h3></div></div><div class="col-md-3"><div class="content-card"><small>Low stock records</small><h3>@Model.LowStockCount</h3></div></div><div class="col-md-3"><div class="content-card"><small>Purchase value</small><h3>৳ @Model.PurchaseTotal.ToString("N2")</h3></div></div><div class="col-md-3"><div class="content-card"><small>Sales value</small><h3>৳ @Model.SalesTotal.ToString("N2")</h3></div></div></div>
-<div class="content-card mt-3"><h5>Stock Report</h5><table class="table"><thead><tr><th>Product</th><th>SKU</th><th>Warehouse</th><th>Quantity</th><th>Reorder</th></tr></thead><tbody>@foreach(var x in stock){<tr><td>@x.ProductName</td><td>@x.Sku</td><td>@x.WarehouseName</td><td>@x.Quantity</td><td>@x.ReorderLevel</td></tr>}</tbody></table></div>
-<div class="content-card mt-3"><h5>Purchase Orders</h5><table class="table"><thead><tr><th>Number</th><th>Date</th><th>Supplier</th><th>Total</th></tr></thead><tbody>@foreach(var x in purchases){<tr><td>@x.Number</td><td>@x.Date.ToString("d")</td><td>@x.PartyName</td><td>@x.Total.ToString("N2")</td></tr>}</tbody></table></div>
-<div class="content-card mt-3"><h5>Sales Orders</h5><table class="table"><thead><tr><th>Number</th><th>Date</th><th>Customer</th><th>Total</th></tr></thead><tbody>@foreach(var x in sales){<tr><td>@x.Number</td><td>@x.Date.ToString("d")</td><td>@x.PartyName</td><td>@x.Total.ToString("N2")</td></tr>}</tbody></table></div>
+<div class="page-heading">
+<div>
+<h3>Reports</h3>
+<p>Current operational summaries.</p>
+</div>
+<button type="button" class="btn btn-outline-primary no-print" onclick="window.print()"><i class="bi bi-printer"></i> Print Report</button>
+</div>
+<div class="row g-3">
+<div class="col-md-3">
+<div class="content-card">
+<small>Products</small>
+<h3>@Model.ProductCount</h3>
+</div>
+</div>
+<div class="col-md-3">
+<div class="content-card">
+<small>Low stock records</small>
+<h3>@Model.LowStockCount</h3>
+</div>
+</div>
+<div class="col-md-3">
+<div class="content-card">
+<small>Purchase value</small>
+<h3>৳ @Model.PurchaseTotal.ToString("N2")</h3>
+</div>
+</div>
+<div class="col-md-3">
+<div class="content-card">
+<small>Sales value</small>
+<h3>৳ @Model.SalesTotal.ToString("N2")</h3>
+</div>
+</div>
+</div>
+<div class="content-card mt-3">
+<h5>Stock Report</h5>
+<table class="table js-data-table">
+<thead>
+<tr>
+<th>Product</th>
+<th>SKU</th>
+<th>Warehouse</th>
+<th>Quantity</th>
+<th>Reorder</th>
+</tr>
+</thead>
+<tbody>@foreach(var x in stock){<tr>
+<td>@x.ProductName</td>
+<td>@x.Sku</td>
+<td>@x.WarehouseName</td>
+<td>@x.Quantity</td>
+<td>@x.ReorderLevel</td>
+</tr>}</tbody>
+</table>
+</div>
+<div class="content-card mt-3">
+<h5>Purchase Orders</h5>
+<table class="table js-data-table">
+<thead>
+<tr>
+<th>Number</th>
+<th>Date</th>
+<th>Supplier</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>@foreach(var x in purchases){<tr>
+<td>@x.Number</td>
+<td>@x.Date.ToString("d")</td>
+<td>@x.PartyName</td>
+<td>@x.Total.ToString("N2")</td>
+</tr>}</tbody>
+</table>
+</div>
+<div class="content-card mt-3">
+<h5>Sales Orders</h5>
+<table class="table js-data-table">
+<thead>
+<tr>
+<th>Number</th>
+<th>Date</th>
+<th>Customer</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>@foreach(var x in sales){<tr>
+<td>@x.Number</td>
+<td>@x.Date.ToString("d")</td>
+<td>@x.PartyName</td>
+<td>@x.Total.ToString("N2")</td>
+</tr>}</tbody>
+</table>
+</div>

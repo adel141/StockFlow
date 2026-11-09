@@ -1,2 +1,127 @@
-@{ViewData["Title"]="Settings";}
-<div class="page-heading"><div><h3>Settings</h3><p>Current system configuration overview.</p></div></div><div class="content-card"><h5>System Overview</h5><p>Active warehouse options: <strong>@ViewBag.WarehouseCount</strong></p><p>Configured roles: <strong>@ViewBag.RoleCount</strong></p><p>Database connection and application settings are managed through <code>appsettings.json</code> and the SQL Server database.</p><p class="text-muted">User and role maintenance is available from the Users section. This page currently provides a read-only configuration overview.</p></div>
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">WORKSPACE CONTROL</span>
+        <h3>Settings & Preferences</h3>
+        <p>Personalize how StockFlow looks and behaves on this device.</p>
+    </div>
+    <span class="settings-status"><i class="bi bi-shield-check"></i> Administrator</span>
+</div>
+
+<div class="row g-4 settings-grid">
+    <div class="col-xl-8">
+        <section class="content-card settings-section">
+            <div class="settings-section-heading">
+                <div class="settings-icon settings-icon-purple"><i class="bi bi-palette"></i></div>
+                <div><h5>Appearance</h5><p>Choose a theme and accent color for your workspace.</p></div>
+            </div>
+            <div class="settings-field">
+                <div><strong>Color theme</strong><small>Apply a light or dark workspace.</small></div>
+                <div class="theme-options" role="group" aria-label="Color theme">
+                    <button type="button" class="theme-choice" data-theme-choice="light"><i class="bi bi-sun"></i><span>Light</span></button>
+                    <button type="button" class="theme-choice" data-theme-choice="dark"><i class="bi bi-moon-stars"></i><span>Dark</span></button>
+                    <button type="button" class="theme-choice" data-theme-choice="system"><i class="bi bi-display"></i><span>System</span></button>
+                </div>
+            </div>
+            <div class="settings-field">
+                <div><strong>Accent color</strong><small>Change the primary action and highlight color.</small></div>
+                <div class="accent-options" role="group" aria-label="Accent color">
+                    <button type="button" class="accent-choice" data-accent="#477fe5" style="--swatch:#477fe5" aria-label="Blue"></button>
+                    <button type="button" class="accent-choice" data-accent="#7657d5" style="--swatch:#7657d5" aria-label="Purple"></button>
+                    <button type="button" class="accent-choice" data-accent="#159b83" style="--swatch:#159b83" aria-label="Teal"></button>
+                    <button type="button" class="accent-choice" data-accent="#d97736" style="--swatch:#d97736" aria-label="Orange"></button>
+                    <button type="button" class="accent-choice" data-accent="#d64f70" style="--swatch:#d64f70" aria-label="Rose"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card settings-section mt-4">
+            <div class="settings-section-heading">
+                <div class="settings-icon settings-icon-blue"><i class="bi bi-layout-three-columns"></i></div>
+                <div><h5>Workspace layout</h5><p>Set the density and default behavior of data tables.</p></div>
+            </div>
+            <div class="settings-field">
+                <div><strong>Table density</strong><small>Choose how much information appears in each row.</small></div>
+                <select class="form-select settings-select" id="tableDensity">
+                    <option value="comfortable">Comfortable</option>
+                    <option value="compact">Compact</option>
+                </select>
+            </div>
+            <div class="settings-field">
+                <div><strong>Rows per page</strong><small>Default number of rows in interactive tables.</small></div>
+                <select class="form-select settings-select" id="defaultPageSize">
+                    <option value="10">10 rows</option>
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                </select>
+            </div>
+            <div class="settings-field">
+                <div><strong>Remember collapsed sidebar</strong><small>Keep your sidebar preference when you return.</small></div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="rememberSidebar" checked>
+                </div>
+            </div>
+        </section>
+
+        <div class="settings-actions">
+            <button type="button" class="btn btn-primary" id="savePreferences"><i class="bi bi-check2-circle me-1"></i> Save preferences</button>
+            <button type="button" class="btn btn-outline-secondary" id="resetPreferences">Reset defaults</button>
+            <span class="settings-feedback" id="settingsFeedback" role="status"></span>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <section class="content-card settings-summary">
+            <div class="settings-icon settings-icon-green"><i class="bi bi-activity"></i></div>
+            <h5>System overview</h5>
+            <p class="text-muted">Current configuration from your database.</p>
+            <div class="settings-summary-row"><span>Configured warehouses</span><strong>@ViewBag.WarehouseCount</strong></div>
+            <div class="settings-summary-row"><span>Configured roles</span><strong>@ViewBag.RoleCount</strong></div>
+            <div class="settings-summary-row"><span>Signed-in account</span><strong class="text-truncate">@User.Identity?.Name</strong></div>
+            <div class="settings-note"><i class="bi bi-info-circle"></i><span>Display preferences are saved in this browser. Database credentials and connection strings remain in server configuration.</span></div>
+        </section>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const density = document.getElementById('tableDensity');
+            const pageSize = document.getElementById('defaultPageSize');
+            const remember = document.getElementById('rememberSidebar');
+            const feedback = document.getElementById('settingsFeedback');
+            const keys = { theme: 'stockflow-theme', accent: 'stockflow-accent', density: 'stockflow-table-density', pageSize: 'stockflow-page-size', remember: 'stockflow-remember-sidebar' };
+            function read(key, fallback) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }
+            function setActive(selector, attribute, value) { document.querySelectorAll(selector).forEach(function (button) { button.classList.toggle('active', button.getAttribute(attribute) === value); }); }
+            let theme = read(keys.theme, 'light');
+            let accent = read(keys.accent, '#477fe5');
+            density.value = read(keys.density, 'comfortable');
+            pageSize.value = read(keys.pageSize, '10');
+            remember.checked = read(keys.remember, 'true') === 'true';
+            setActive('[data-theme-choice]', 'data-theme-choice', theme);
+            setActive('[data-accent]', 'data-accent', accent);
+            document.querySelectorAll('[data-theme-choice]').forEach(function (button) { button.addEventListener('click', function () { theme = button.dataset.themeChoice; setActive('[data-theme-choice]', 'data-theme-choice', theme); }); });
+            document.querySelectorAll('[data-accent]').forEach(function (button) { button.addEventListener('click', function () { accent = button.dataset.accent; setActive('[data-accent]', 'data-accent', accent); }); });
+            document.getElementById('savePreferences').addEventListener('click', function () {
+                try {
+                    localStorage.setItem(keys.theme, theme); localStorage.setItem(keys.accent, accent);
+                    localStorage.setItem(keys.density, density.value); localStorage.setItem(keys.pageSize, pageSize.value);
+                    localStorage.setItem(keys.remember, String(remember.checked));
+                    document.documentElement.dataset.theme = theme; document.documentElement.style.setProperty('--sf-primary', accent);
+                    const useDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    document.documentElement.classList.toggle('theme-dark', useDark);
+                    document.documentElement.dataset.tableDensity = density.value;
+                    feedback.textContent = 'Preferences saved successfully.'; feedback.classList.add('show');
+                } catch { feedback.textContent = 'Browser storage is unavailable. Preferences could not be saved.'; feedback.classList.add('show', 'text-danger'); }
+            });
+            document.getElementById('resetPreferences').addEventListener('click', function () {
+                theme = 'light'; accent = '#477fe5'; density.value = 'comfortable'; pageSize.value = '10'; remember.checked = true;
+                setActive('[data-theme-choice]', 'data-theme-choice', theme); setActive('[data-accent]', 'data-accent', accent);
+                document.getElementById('savePreferences').click();
+            });
+        });
+    </script>
+}

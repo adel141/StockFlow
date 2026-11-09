@@ -1,7 +1,63 @@
 @model SmartInventory.Model.OperationsDto.DashboardDto
-@{ViewData["Title"]="Dashboard";}
-<div class="page-heading"><div><h3>Dashboard</h3><p>Inventory and business overview.</p></div></div>
-<div class="row g-3 mb-4">
-@foreach(var item in new[]{("Products",Model.ProductCount,"/Products"),("Categories",Model.CategoryCount,"/Categories"),("Suppliers",Model.SupplierCount,"/Suppliers"),("Customers",Model.CustomerCount,"/Customers"),("Warehouses",Model.WarehouseCount,"/Warehouses"),("Low Stock",Model.LowStockCount,"/Inventory")}){<div class="col-md-4 col-xl-2"><a href="@item.Item3" class="text-decoration-none"><div class="content-card h-100"><p class="text-muted mb-1">@item.Item1</p><h3>@item.Item2</h3></div></a></div>}
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Dashboard";
+    var warehouseLabels = Model.LowStock.GroupBy(x => x.WarehouseName).Select(g => g.Key).ToList();
+    var warehouseValues = Model.LowStock.GroupBy(x => x.WarehouseName).Select(g => g.Sum(x => x.Quantity)).ToList();
+    var transactionLabels = Model.RecentTransactions.GroupBy(x => x.Type).Select(g => g.Key).ToList();
+    var transactionValues = Model.RecentTransactions.GroupBy(x => x.Type).Select(g => g.Count()).ToList();
+}
+<div class="page-heading dashboard-heading">
+    <div><h3>Dashboard</h3><p>Inventory and business overview.</p></div>
+    <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-graph-up"></i> View reports</a>
 </div>
-<div class="row g-3"><div class="col-lg-6"><div class="content-card"><h5>Purchase Total</h5><h3>৳ @Model.PurchaseTotal.ToString("N2")</h3></div></div><div class="col-lg-6"><div class="content-card"><h5>Sales Total</h5><h3>৳ @Model.SalesTotal.ToString("N2")</h3></div></div><div class="col-lg-6"><div class="content-card"><h5>Low Stock Products</h5><table class="table"><thead><tr><th>Product</th><th>Warehouse</th><th>Qty</th><th>Reorder</th></tr></thead><tbody>@foreach(var x in Model.LowStock){<tr><td>@x.ProductName</td><td>@x.WarehouseName</td><td>@x.Quantity</td><td>@x.ReorderLevel</td></tr>}</tbody></table><a asp-controller="Inventory" asp-action="Index">View inventory</a></div></div><div class="col-lg-6"><div class="content-card"><h5>Recent Stock Transactions</h5><table class="table"><thead><tr><th>Date</th><th>Product</th><th>Type</th><th>Qty</th></tr></thead><tbody>@foreach(var x in Model.RecentTransactions){<tr><td>@x.Date.ToString("dd MMM")</td><td>@x.ProductName</td><td>@x.Type</td><td>@x.Quantity</td></tr>}</tbody></table><a asp-controller="Transactions" asp-action="Index">View all transactions</a></div></div></div>
+<div class="row g-3 mb-4 dashboard-metrics">
+    @foreach (var item in new[] { ("Products", Model.ProductCount, "/Products", "bi-box"), ("Categories", Model.CategoryCount, "/Categories", "bi-tags"), ("Suppliers", Model.SupplierCount, "/Suppliers", "bi-truck"), ("Customers", Model.CustomerCount, "/Customers", "bi-people"), ("Warehouses", Model.WarehouseCount, "/Warehouses", "bi-building"), ("Low Stock", Model.LowStockCount, "/Inventory", "bi-exclamation-triangle") })
+    {
+        <div class="col-md-4 col-xl-2">
+            <a href="@item.Item3" class="text-decoration-none">
+                <div class="content-card dashboard-stat-card h-100">
+                    <div class="d-flex justify-content-between align-items-center"><p class="text-muted mb-1">@item.Item1</p><i class="bi @item.Item4"></i></div>
+                    <h3 class="@(item.Item1 == "Low Stock" && item.Item2 > 0 ? "text-danger" : "")">@item.Item2</h3>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-lg-6"><div class="content-card h-100"><div class="card-heading"><div><h5>Purchase Total</h5><p>Recorded purchase value</p></div><i class="bi bi-cart-plus fs-4 text-primary"></i></div><h3>৳ @Model.PurchaseTotal.ToString("N2")</h3></div></div>
+    <div class="col-lg-6"><div class="content-card h-100"><div class="card-heading"><div><h5>Sales Total</h5><p>Recorded sales value</p></div><i class="bi bi-receipt fs-4 text-success"></i></div><h3>৳ @Model.SalesTotal.ToString("N2")</h3></div></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-lg-7"><div class="content-card chart-card"><div class="card-heading"><div><h5>Low-stock quantity by warehouse</h5><p>Based on current low-stock records</p></div></div><div class="chart-container"><canvas id="lowStockChart"></canvas></div></div></div>
+    <div class="col-lg-5"><div class="content-card chart-card"><div class="card-heading"><div><h5>Recent transaction mix</h5><p>Latest recorded stock movements</p></div></div><div class="chart-container chart-container-small"><canvas id="transactionChart"></canvas></div></div></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-12"><div class="content-card chart-card chart-card-compact"><div class="card-heading"><div><h5>Purchase vs Sales</h5><p>Recorded business value comparison</p></div><span class="chart-period-label">All recorded orders</span></div><div class="chart-container chart-container-short"><canvas id="businessTotalsChart"></canvas></div></div></div>
+</div>
+<div class="row g-3">
+    <div class="col-lg-6"><div class="content-card"><div class="card-heading"><h5>Low Stock Products</h5><a asp-controller="Inventory" asp-action="Index">View inventory</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Product</th><th>Warehouse</th><th>Qty</th><th>Reorder</th></tr></thead><tbody>
+    @foreach (var x in Model.LowStock) { <tr class="stock-low-row"><td>@x.ProductName</td><td>@x.WarehouseName</td><td class="text-danger fw-bold">@x.Quantity</td><td>@x.ReorderLevel</td></tr> }
+    @if (!Model.LowStock.Any()) { <tr><td colspan="4" class="text-center text-muted">No low-stock records. Everything looks healthy.</td></tr> }
+    </tbody></table></div></div></div>
+    <div class="col-lg-6"><div class="content-card"><div class="card-heading"><h5>Recent Stock Transactions</h5><a asp-controller="Transactions" asp-action="Index">View all</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Date</th><th>Product</th><th>Type</th><th>Qty</th></tr></thead><tbody>
+    @foreach (var x in Model.RecentTransactions) { <tr><td>@x.Date.ToString("dd MMM")</td><td>@x.ProductName</td><td>@x.Type</td><td>@x.Quantity</td></tr> }
+    @if (!Model.RecentTransactions.Any()) { <tr><td colspan="4" class="text-center text-muted">No recent transactions.</td></tr> }
+    </tbody></table></div></div></div>
+</div>
+@section Scripts {
+    <script src="~/lib/plugins/chart.js/Chart.min.js"></script>
+    <script>
+        const lowStockLabels = @Html.Raw(JsonSerializer.Serialize(warehouseLabels));
+        const lowStockValues = @Html.Raw(JsonSerializer.Serialize(warehouseValues));
+        const transactionLabels = @Html.Raw(JsonSerializer.Serialize(transactionLabels));
+        const transactionValues = @Html.Raw(JsonSerializer.Serialize(transactionValues));
+        const businessTotals = @Html.Raw(JsonSerializer.Serialize(new[] { Model.PurchaseTotal, Model.SalesTotal }));
+        const lowStockCanvas = document.getElementById('lowStockChart');
+        if (lowStockCanvas) new Chart(lowStockCanvas, { type: 'bar', data: { labels: lowStockLabels, datasets: [{ label: 'Units in low-stock records', data: lowStockValues, backgroundColor: '#e35d6a', borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { yAxes: [{ ticks: { beginAtZero: true, precision: 0 } }] }, legend: { display: false } } });
+        const transactionCanvas = document.getElementById('transactionChart');
+        if (transactionCanvas) new Chart(transactionCanvas, { type: 'doughnut', data: { labels: transactionLabels, datasets: [{ data: transactionValues, backgroundColor: ['#477fe5', '#36a779', '#e6a23c', '#9b7be8', '#e35d6a'] }] }, options: { responsive: true, maintainAspectRatio: false, legend: { position: 'bottom' } } });
+        const businessTotalsCanvas = document.getElementById('businessTotalsChart');
+        if (businessTotalsCanvas) new Chart(businessTotalsCanvas, { type: 'bar', data: { labels: ['Purchases', 'Sales'], datasets: [{ label: 'Total value (৳)', data: businessTotals, backgroundColor: ['#8b78e6', '#25a98a'], borderRadius: 8, barPercentage: 0.48 }] }, options: { responsive: true, maintainAspectRatio: false, legend: { display: false }, scales: { yAxes: [{ ticks: { beginAtZero: true } }] } } });
+    </script>
+}

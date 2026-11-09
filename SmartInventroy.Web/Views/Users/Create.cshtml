@@ -1,3 +1,46 @@
 @model SmartInventroy.Web.Models.Operations.UserFormViewModel
 @{ViewData["Title"]="Create User";}
-<div class="page-heading"><div><h3>Create User</h3></div><a asp-action="Index" class="btn btn-light">Back</a></div><div class="content-card"><form asp-action="Create" method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><div class="row g-3"><div class="col-md-6"><label asp-for="User.FullName" class="form-label">Full Name</label><input asp-for="User.FullName" class="form-control"/><span asp-validation-for="User.FullName" class="text-danger"></span></div><div class="col-md-6"><label asp-for="User.Username" class="form-label">Username</label><input asp-for="User.Username" class="form-control"/></div><div class="col-md-6"><label asp-for="User.Email" class="form-label">Email</label><input asp-for="User.Email" class="form-control"/></div><div class="col-md-6"><label asp-for="User.Password" class="form-label">Temporary Password</label><input asp-for="User.Password" type="password" class="form-control" autocomplete="new-password"/></div><div class="col-md-6"><label asp-for="User.RoleId" class="form-label">Role</label><select asp-for="User.RoleId" asp-items="Model.Roles" class="form-select"><option value="">Select role</option></select></div><div class="col-md-6 form-check mt-5"><input asp-for="User.IsActive" class="form-check-input"/><label asp-for="User.IsActive" class="form-check-label">Active</label></div></div><button class="btn btn-primary mt-4">Save User</button></form></div>
+<div class="page-heading">
+<div>
+<h3>Create User</h3>
+</div>
+<a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+<div class="content-card">
+<form asp-action="Create" method="post">
+<div asp-validation-summary="ModelOnly" class="text-danger">
+</div>
+<div class="row g-3">
+<div class="col-md-6">
+<label asp-for="User.FullName" class="form-label">Full Name</label>
+<input asp-for="User.FullName" class="form-control"/>
+<span asp-validation-for="User.FullName" class="text-danger">
+</span>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Username" class="form-label">Username</label>
+<input asp-for="User.Username" class="form-control"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Email" class="form-label">Email</label>
+<input asp-for="User.Email" class="form-control"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Password" class="form-label">Temporary Password</label>
+<input asp-for="User.Password" type="password" class="form-control" autocomplete="new-password"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.RoleId" class="form-label">Role</label>
+<select asp-for="User.RoleId" asp-items="Model.Roles" class="form-select">
+<option value="">Select role</option>
+</select>
+</div>
+<div class="col-md-6 form-check mt-5">
+<input asp-for="User.IsActive" class="form-check-input"/>
+<label asp-for="User.IsActive" class="form-check-label">Active</label>
+</div>
+</div>
+<button class="btn btn-primary mt-4">Save User</button>
+</form>
+</div>
+@section Scripts{}

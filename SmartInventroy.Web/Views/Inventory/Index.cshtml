@@ -1,4 +1,72 @@
 @model List<SmartInventory.Model.OperationsDto.StockRowDto>
-@{ViewData["Title"]="Inventory";}
-<div class="page-heading"><div><h3>Inventory</h3><p>Current stock by product and warehouse.</p></div><a asp-action="Adjust" class="btn btn-primary">Adjust Stock</a></div>
-<div class="content-card"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>Product</th><th>SKU</th><th>Warehouse</th><th>Quantity</th><th>Reorder Level</th><th>Status</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.ProductName</td><td>@x.Sku</td><td>@x.WarehouseName</td><td>@x.Quantity</td><td>@x.ReorderLevel</td><td>@(x.IsLowStock?"Low Stock":"Available")</td></tr>}</tbody></table></div></div>
+@{ViewData["Title"]="Inventory"; var lowCount=Model.Count(x=>x.IsLowStock);}
+<div class="page-heading">
+<div>
+<h3>Inventory</h3>
+<p>Current stock by product and warehouse.</p>
+</div>
+<a asp-action="Adjust" class="btn btn-primary">
+<i class="bi bi-sliders me-1">
+</i>Adjust Stock</a>
+</div>
+<div class="row g-3 mb-3">
+<div class="col-md-4">
+<div class="content-card">
+<small class="text-muted">Stock records</small>
+<h3 class="mb-0">@Model.Count</h3>
+</div>
+</div>
+<div class="col-md-4">
+<div class="content-card">
+<small class="text-muted">Low stock alerts</small>
+<h3 class="text-danger mb-0">@lowCount</h3>
+</div>
+</div>
+<div class="col-md-4">
+<div class="content-card">
+<small class="text-muted">Healthy stock records</small>
+<h3 class="text-success mb-0">@(Model.Count-lowCount)</h3>
+</div>
+</div>
+</div>
+<div class="content-card">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h5 class="mb-0">Stock by warehouse</h5>
+<span class="badge text-bg-danger">@lowCount low stock</span>
+</div>
+<div class="table-responsive">
+<table class="js-data-table table table-hover align-middle">
+<thead>
+<tr>
+<th>Product</th>
+<th>SKU</th>
+<th>Warehouse</th>
+<th>Quantity</th>
+<th>Reorder Level</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+@if(!Model.Any()){<tr>
+<td colspan="6" class="text-center text-muted py-4">No stock records found.</td>
+</tr>}
+@foreach(var x in Model){<tr class="@(x.IsLowStock?"stock-low-row":"")">
+<td>
+<strong>@x.ProductName</strong>
+</td>
+<td>@x.Sku</td>
+<td>@x.WarehouseName</td>
+<td>
+<strong class="@(x.IsLowStock?"text-danger":"text-success")">@x.Quantity</strong>
+</td>
+<td>@x.ReorderLevel</td>
+<td>@if(x.IsLowStock){<span class="stock-status stock-status-low">
+<i class="bi bi-exclamation-circle-fill">
+</i> Low stock</span>}else{<span class="stock-status stock-status-ok">
+<i class="bi bi-check-circle-fill">
+</i> Healthy</span>}</td>
+</tr>}
+</tbody>
+</table>
+</div>
+</div>

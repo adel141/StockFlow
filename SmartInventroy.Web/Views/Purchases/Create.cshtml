@@ -1,11 +1,80 @@
 @model SmartInventroy.Web.Models.Operations.OrderFormViewModel
 @{ViewData["Title"]="Create Purchase";}
-<div class="page-heading"><div><h3>Create Purchase</h3><p>Receiving stock from a supplier.</p></div><a asp-action="Index" class="btn btn-light">Back</a></div>
-<div class="content-card"><form asp-action="Create" method="post"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="row g-3"><div class="col-md-4"><label class="form-label">Supplier</label><select asp-for="PartyId" asp-items="Model.Parties" class="form-select"><option value="">Select supplier</option></select></div><div class="col-md-4"><label asp-for="WarehouseId" class="form-label">Warehouse</label><select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select"><option value="">Select warehouse</option></select></div><div class="col-md-4"><label asp-for="OrderDate" class="form-label">Order Date</label><input asp-for="OrderDate" type="date" class="form-control"/></div><div class="col-md-4"><label asp-for="ExpectedDate" class="form-label">Expected Date</label><input asp-for="ExpectedDate" type="date" class="form-control"/></div><div class="col-12"><label asp-for="Notes" class="form-label">Notes</label><textarea asp-for="Notes" class="form-control"></textarea></div></div><hr/><h5>Order Items</h5><div class="table-responsive"><table class="table" id="lines"><thead><tr><th>Product</th><th>Quantity</th><th>Unit Price</th><th></th></tr></thead><tbody id="lineBody"></tbody></table></div><button type="button" class="btn btn-outline-secondary btn-sm" id="addLine">Add product</button><div class="d-flex justify-content-end mt-4"><button class="btn btn-primary">Receive Purchase</button></div></form></div>
-@section Scripts {
-	<script>
+<div class="page-heading">
+<div>
+<h3>Create Purchase</h3>
+<p>Receiving stock from a supplier.</p>
+</div>
+<a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+<div class="content-card">
+<form asp-action="Create" method="post">
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3">
+</div>
+<div class="row g-3">
+<div class="col-md-4">
+<label class="form-label">Supplier</label>
+<select asp-for="PartyId" asp-items="Model.Parties" class="form-select">
+<option value="">Select supplier</option>
+</select>
+</div>
+<div class="col-md-4">
+<label asp-for="WarehouseId" class="form-label">Warehouse</label>
+<select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select">
+<option value="">Select warehouse</option>
+</select>
+</div>
+<div class="col-md-4">
+<label asp-for="OrderDate" class="form-label">Order Date</label>
+<input asp-for="OrderDate" type="date" class="form-control"/>
+</div>
+<div class="col-md-4">
+<label asp-for="ExpectedDate" class="form-label">Expected Date</label>
+<input asp-for="ExpectedDate" type="date" class="form-control"/>
+</div>
+<div class="col-12">
+<label asp-for="Notes" class="form-label">Notes</label>
+<textarea asp-for="Notes" class="form-control">
+</textarea>
+</div>
+</div>
+<hr/>
+<h5>Order Items</h5>
+<div class="table-responsive">
+<table class="table" id="lines">
+<thead>
+<tr>
+<th>Product</th>
+<th>Quantity</th>
+<th>Unit Price</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody id="lineBody">
+</tbody>
+</table>
+</div>
+<button type="button" class="btn btn-outline-secondary btn-sm" id="addLine">Add product</button>
+<div class="d-flex justify-content-end mt-4">
+<button class="btn btn-primary">Receive Purchase</button>
+</div>
+</form>
+</div>
+@section Scripts {<script>
 const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Products.Select(x => new { value=x.Value, text=x.Text })));
 const body=document.getElementById('lineBody');
-function addLine(){const i=body.children.length;const tr=document.createElement('tr');let opts='<option value="">Select product</option>'+products.map(p=>`<option value="${p.value}">${p.text}</option>`).join('');tr.innerHTML=`<td><select name="Items[${i}].ProductId" class="form-select" required>${opts}</select></td><td><input name="Items[${i}].Quantity" type="number" min="1" value="1" class="form-control" required/></td><td><input name="Items[${i}].UnitPrice" type="number" min="0" step="0.01" value="0" class="form-control" required/></td><td><button type="button" class="btn btn-sm btn-outline-danger">Remove</button></td>`;tr.querySelector('button').onclick=()=>{tr.remove();[...body.children].forEach((r,n)=>r.querySelectorAll('input,select').forEach(el=>el.name=el.name.replace(/Items\[\d+\]/,`Items[${n}]`)));};body.appendChild(tr);}
+function addLine(){const i=body.children.length;const tr=document.createElement('tr');let opts='<option value="">Select product</option>'+products.map(p=>`<option value="${p.value}">${p.text}</option>`).join('');tr.innerHTML=`<td>
+<select name="Items[${i}].ProductId" class="form-select" required>${opts}</select>
+</td>
+<td>
+<input name="Items[${i}].Quantity" type="number" min="1" value="1" class="form-control" required/>
+</td>
+<td>
+<input name="Items[${i}].UnitPrice" type="number" min="0" step="0.01" value="0" class="form-control" required/>
+</td>
+<td>
+<button type="button" class="btn btn-sm btn-outline-danger">Remove</button>
+</td>`;tr.querySelector('button').onclick=()=>{tr.remove();[...body.children].forEach((r,n)=>r.querySelectorAll('input,select').forEach(el=>el.name=el.name.replace(/Items\[\d+\]/,`Items[${n}]`)));};body.appendChild(tr);}
 document.getElementById('addLine').addEventListener('click',addLine);addLine();
 </script>}

@@ -1,3 +1,44 @@
 @model SmartInventroy.Web.Models.Operations.UserFormViewModel
 @{ViewData["Title"]="Edit User";}
-<div class="page-heading"><div><h3>Edit User</h3></div><a asp-action="Index" class="btn btn-light">Back</a></div><div class="content-card"><form asp-action="Edit" method="post"><input asp-for="User.UserId" type="hidden"/><div asp-validation-summary="ModelOnly" class="text-danger"></div><div class="row g-3"><div class="col-md-6"><label asp-for="User.FullName" class="form-label">Full Name</label><input asp-for="User.FullName" class="form-control"/></div><div class="col-md-6"><label asp-for="User.Username" class="form-label">Username</label><input asp-for="User.Username" class="form-control"/></div><div class="col-md-6"><label asp-for="User.Email" class="form-label">Email</label><input asp-for="User.Email" class="form-control"/></div><div class="col-md-6"><label asp-for="User.Password" class="form-label">New Password (leave blank to keep current)</label><input asp-for="User.Password" type="password" class="form-control" autocomplete="new-password"/></div><div class="col-md-6"><label asp-for="User.RoleId" class="form-label">Role</label><select asp-for="User.RoleId" asp-items="Model.Roles" class="form-select"></select></div><div class="col-md-6 form-check mt-5"><input asp-for="User.IsActive" class="form-check-input"/><label asp-for="User.IsActive" class="form-check-label">Active</label></div></div><button class="btn btn-primary mt-4">Update User</button></form></div>
+<div class="page-heading">
+<div>
+<h3>Edit User</h3>
+</div>
+<a asp-action="Index" class="btn btn-light">Back</a>
+</div>
+<div class="content-card">
+<form asp-action="Edit" method="post">
+<input asp-for="User.UserId" type="hidden"/>
+<div asp-validation-summary="ModelOnly" class="text-danger">
+</div>
+<div class="row g-3">
+<div class="col-md-6">
+<label asp-for="User.FullName" class="form-label">Full Name</label>
+<input asp-for="User.FullName" class="form-control"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Username" class="form-label">Username</label>
+<input asp-for="User.Username" class="form-control"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Email" class="form-label">Email</label>
+<input asp-for="User.Email" class="form-control"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.Password" class="form-label">New Password (leave blank to keep current)</label>
+<input asp-for="User.Password" type="password" class="form-control" autocomplete="new-password"/>
+</div>
+<div class="col-md-6">
+<label asp-for="User.RoleId" class="form-label">Role</label>
+<select asp-for="User.RoleId" asp-items="Model.Roles" class="form-select">
+</select>
+</div>
+<div class="col-md-6 form-check mt-5">
+<input asp-for="User.IsActive" class="form-check-input"/>
+<label asp-for="User.IsActive" class="form-check-label">Active</label>
+</div>
+</div>
+<button class="btn btn-primary mt-4">Update User</button>
+</form>
+</div>
+@section Scripts{}
