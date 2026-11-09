@@ -54,7 +54,7 @@ namespace SmartInventroy.BLL.Service
             return productRepository.Add(product);
         }
 
-        public bool UpdateProduct(int id, ProductListModel productUpdateDto)
+        public bool UpdateProduct(int id, ProductUpdateDto productUpdateDto)
         {
             if(productUpdateDto == null)
             {

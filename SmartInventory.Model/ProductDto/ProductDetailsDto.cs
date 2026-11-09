@@ -27,9 +27,9 @@ namespace SmartInventory.Model.ProductDto
         // Overall stock information
         public int TotalQuantity { get; set; }
         public bool IsLowStock { get; set; }
+        public List<WarehouseStockDto> WarehouseStocks { get; set; }
 
         // Warehouse-wise stock
-        public List<WarehouseStockDto> WarehouseStocks { get; set; }
     }
 
     public class WarehouseStockDto

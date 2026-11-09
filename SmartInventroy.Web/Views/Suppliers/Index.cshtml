@@ -1,43 +1,8 @@
-@{
-    ViewData["Title"] = "Suppliers";
-}
-
-<div class="page-heading">
-    <div><h3>Suppliers</h3><p>Manage your product suppliers.</p></div>
-    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Supplier</a>
-</div>
-
-<div class="content-card">
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th>Supplier</th>
-                    <th>Contact Person</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Location</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Tech Distribution Ltd.</strong></td>
-                    <td>Rahim Ahmed</td>
-                    <td>sales@example.com</td>
-                    <td>01700000001</td>
-                    <td>Dhaka</td>
-                    <td><a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Global Electronics</strong></td>
-                    <td>Karim Hasan</td>
-                    <td>info@example.com</td>
-                    <td>01700000002</td>
-                    <td>Chattogram</td>
-                    <td><a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+@model IEnumerable<SmartInventory.Model.CrudDto.SupplierDto>
+@{ ViewData["Title"]="Suppliers"; }
+<div class="page-heading"><div><h3>Suppliers</h3><p>Manage suppliers records.</p></div><a asp-action="Create" class="btn btn-primary">Add Supplier</a></div>
+@if(TempData["Success"]!=null){<div class="alert alert-success">@TempData["Success"]</div>} @if(TempData["Error"]!=null){<div class="alert alert-danger">@TempData["Error"]</div>}
+<div class="content-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Supplier Name</th><th>Contact Person</th><th>Phone</th><th>Email</th><th>Active</th><th>Purchase Orders</th><th>Actions</th></tr></thead><tbody>
+@foreach(var item in Model){<tr><td>@item.SupplierName</td><td>@item.ContactPerson</td><td>@item.Phone</td><td>@item.Email</td><td>@(item.IsActive ? "Active" : "Inactive")</td><td>@item.PurchaseOrderCount</td><td><a asp-action="Edit" asp-route-id="@item.SupplierId" class="btn btn-sm btn-light">Edit</a><form asp-action="Delete" asp-route-id="@item.SupplierId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td></tr>}
+@if(!Model.Any()){<tr><td colspan="10" class="text-center text-muted">No records found.</td></tr>}
+</tbody></table></div></div>

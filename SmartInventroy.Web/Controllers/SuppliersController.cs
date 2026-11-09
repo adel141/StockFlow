@@ -1,26 +1,3 @@
-
-using Microsoft.AspNetCore.Mvc;
-
-namespace SmartInventory.Web.Controllers
-{
-    public class SuppliersController : Controller
-    {
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            return View();
-        }
-    }
-}
+using Microsoft.AspNetCore.Mvc; using SmartInventory.Model.CrudDto; using SmartInventroy.BLL.Service;
+namespace SmartInventroy.Web.Controllers;
+public class SuppliersController:Controller { private readonly SupplierService _s; public SuppliersController(SupplierService s)=>_s=s; public IActionResult Index()=>View(_s.GetAll()); [HttpGet] public IActionResult Create()=>View(new SupplierDto{IsActive=true}); [HttpPost,ValidateAntiForgeryToken] public IActionResult Create(SupplierDto m){if(!ModelState.IsValid)return View(m);try{_s.Save(m);TempData["Success"]="Supplier created.";return RedirectToAction(nameof(Index));}catch(Exception e){ModelState.AddModelError("",e.Message);return View(m);}} [HttpGet] public IActionResult Edit(int id){var x=_s.Get(id);return x==null?NotFound():View(x);} [HttpPost,ValidateAntiForgeryToken] public IActionResult Edit(int id,SupplierDto m){if(id!=m.SupplierId)return BadRequest();if(!ModelState.IsValid)return View(m);try{if(!_s.Save(m))return NotFound();TempData["Success"]="Supplier updated.";return RedirectToAction(nameof(Index));}catch(Exception e){ModelState.AddModelError("",e.Message);return View(m);}} [HttpPost,ValidateAntiForgeryToken] public IActionResult Delete(int id){try{_s.Delete(id);TempData["Success"]="Supplier deleted.";}catch{TempData["Error"]="Cannot delete a supplier that has purchase orders.";}return RedirectToAction(nameof(Index));}}

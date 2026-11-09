@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using SmartInvetory.DAL.EF.Tables;
@@ -43,7 +43,10 @@ public partial class SmartInventoryDbContext : DbContext
     public virtual DbSet<Warehouse> Warehouses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=dbconn");
+    {
+        if (!optionsBuilder.IsConfigured)
+            optionsBuilder.UseSqlServer("Name=dbconn");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

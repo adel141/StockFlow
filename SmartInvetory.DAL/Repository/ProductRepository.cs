@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SmartInvetory.DAL.EF;
 using SmartInvetory.DAL.EF.Tables;
 using SmartInvetory.DAL.Interfaces;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SmartInvetory.DAL.Repository
 {
-    internal class ProductRepository : Repository<Product, int>,IProductRepository
+    public class ProductRepository : Repository<Product, int>,IProductRepository
     {
         private readonly SmartInventoryDbContext _context;
 

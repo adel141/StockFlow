@@ -1,43 +1,8 @@
-@{
-    ViewData["Title"] = "Customers";
-}
-
-<div class="page-heading">
-    <div><h3>Customers</h3><p>Manage customer records and contact details.</p></div>
-    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Customer</a>
-</div>
-
-<div class="content-card">
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th>Customer</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>City</th>
-                    <th>Total Orders</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>ABC Corporation</strong></td>
-                    <td>abc@example.com</td>
-                    <td>01800000001</td>
-                    <td>Dhaka</td>
-                    <td>24</td>
-                    <td><a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>XYZ Enterprise</strong></td>
-                    <td>xyz@example.com</td>
-                    <td>01800000002</td>
-                    <td>Gazipur</td>
-                    <td>12</td>
-                    <td><a asp-action="Edit" asp-route-id="2" class="btn btn-sm btn-light"><i class="bi bi-pencil"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+@model IEnumerable<SmartInventory.Model.CrudDto.CustomerDto>
+@{ ViewData["Title"]="Customers"; }
+<div class="page-heading"><div><h3>Customers</h3><p>Manage customers records.</p></div><a asp-action="Create" class="btn btn-primary">Add Customer</a></div>
+@if(TempData["Success"]!=null){<div class="alert alert-success">@TempData["Success"]</div>} @if(TempData["Error"]!=null){<div class="alert alert-danger">@TempData["Error"]</div>}
+<div class="content-card"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Customer Name</th><th>Email</th><th>Phone</th><th>Sales Orders</th><th>Actions</th></tr></thead><tbody>
+@foreach(var item in Model){<tr><td>@item.CustomerName</td><td>@item.Email</td><td>@item.Phone</td><td>@item.SalesOrderCount</td><td><a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-light">Edit</a><form asp-action="Delete" asp-route-id="@item.CustomerId" method="post" class="d-inline" onsubmit="return confirm('Delete this record?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td></tr>}
+@if(!Model.Any()){<tr><td colspan="10" class="text-center text-muted">No records found.</td></tr>}
+</tbody></table></div></div>
