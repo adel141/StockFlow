@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="SmartInventory.API/SmartInventory.API.csproj" Id="54cfb821-e519-4329-9bf6-3c5fd02b0d18" />
   <Project Path="SmartInventory.Model/SmartInventory.Model.csproj" />
   <Project Path="SmartInventroy.BLL/SmartInventroy.BLL.csproj" />
   <Project Path="SmartInventroy.Web/SmartInventroy.Web.csproj" />

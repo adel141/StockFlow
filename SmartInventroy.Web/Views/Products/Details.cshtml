@@ -2,56 +2,216 @@
     ViewData["Title"] = "Product Details";
 }
 
-<div class="page-heading">
-    <div>
-        <h3>Product Details</h3>
-        <p>View complete product information.</p>
-    </div>
-    <div class="d-flex gap-2">
-        <a asp-action="Edit" asp-route-id="1" class="btn btn-primary">
-            <i class="bi bi-pencil"></i> Edit
-        </a>
-        <a asp-action="Index" class="btn btn-light">Back</a>
-    </div>
-</div>
+<div class="container-fluid mt-4">
 
-<div class="content-card">
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4>Wireless Mouse</h4>
-            <span class="text-muted">SKU: PRD-001</span>
+            <h2>Product Details</h2>
+            <p class="text-muted">View complete product information and stock.</p>
         </div>
-        <span class="status success">Active</span>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Back to Products
+        </a>
     </div>
 
-    <div class="row g-4">
+    <!-- Product Header -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+
+                <div>
+                    <h3>@Model.ProductName</h3>
+
+                    <p class="text-muted mb-1">
+                        SKU: @Model.SKU
+                    </p>
+
+                    <p class="text-muted">
+                        Barcode: @Model.Barcode
+                    </p>
+                </div>
+
+                <div>
+                    @if (!Model.IsActive)
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                    else if (Model.IsLowStock)
+                    {
+                        <span class="badge bg-danger text-dark">Low Stock</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Available</span>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Summary -->
+    <div class="row mb-4">
+
         <div class="col-md-6">
-            <small class="text-muted">Category</small>
-            <p>Accessories</p>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Available Stock</h6>
+                    <h2 class="text-success">
+						@Model.TotalQuantity @Model.Unit
+                    </h2>
+                    <small>Across all warehouses</small>
+                </div>
+            </div>
         </div>
+
         <div class="col-md-6">
-            <small class="text-muted">Supplier</small>
-            <p>Tech Distribution Ltd.</p>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Reorder Level</h6>
+                    <h2>@Model.ReorderLevel @Model.Unit</h2>
+                    <small>Minimum stock threshold</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <small class="text-muted">Purchase Price</small>
-            <p>৳600</p>
+
+    </div>
+
+    <!-- Basic Information -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Basic Information</h5>
         </div>
-        <div class="col-md-6">
-            <small class="text-muted">Selling Price</small>
-            <p>৳850</p>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">Product Name</label>
+                    <h6>@Model.ProductName</h6>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">Category</label>
+                    <h6>@Model.CategoryName</h6>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">SKU</label>
+                    <h6>@Model.SKU</h6>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">Barcode</label>
+                    <h6>@Model.Barcode</h6>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">Unit</label>
+                    <h6>@Model.Unit</h6>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted">Created At</label>
+                    <h6>@Model.CreatedAt.ToString("dd MMM yyyy")</h6>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <label class="text-muted">Description</label>
+                    <p>
+                        @(string.IsNullOrWhiteSpace(Model.Description)
+                        ? "No description available."
+                        : Model.Description)
+                    </p>
+                </div>
+
+            </div>
+
         </div>
-        <div class="col-md-6">
-            <small class="text-muted">Available Stock</small>
-            <p>120 Pieces</p>
+    </div>
+
+    <!-- Pricing -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Pricing Information</h5>
         </div>
-        <div class="col-md-6">
-            <small class="text-muted">Minimum Stock Level</small>
-            <p>15 Pieces</p>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <label class="text-muted">Purchase Price</label>
+                    <h4>৳ @Model.PurchasePrice.ToString("N2")</h4>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="text-muted">Selling Price</label>
+                    <h4>৳ @Model.SellingPrice.ToString("N2")</h4>
+                </div>
+
+            </div>
+
         </div>
-        <div class="col-12">
-            <small class="text-muted">Description</small>
-            <p>Wireless optical mouse with USB receiver.</p>
+    </div>
+
+<!-- Warehouse Stock -->
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Warehouse Stock Distribution</h5>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Warehouse ID</th>
+                        <th>Warehouse Name</th>
+                        <th>Available Quantity</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.WarehouseStocks != null)
+                    {
+                        @foreach (var stock in Model.WarehouseStocks)
+                        {
+                            <tr>
+                                <td>@stock.WarehouseId</td>
+                                <td>@stock.WarehouseName</td>
+                                <td>
+                                    <strong>
+                                        @stock.QuantityAvailable
+                                    </strong>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+                                No warehouse stock available.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
         </div>
+
     </div>
 </div>

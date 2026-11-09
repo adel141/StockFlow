@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SmartInventory.Model\SmartInventory.Model.csproj" />
     <ProjectReference Include="..\SmartInvetory.DAL\SmartInvetory.DAL.csproj" />
   </ItemGroup>

@@ -1,32 +1,57 @@
 
 using Microsoft.AspNetCore.Mvc;
+using SmartInventory.Model.ProductDto;
+using SmartInventroy.BLL.Service;
 
 namespace SmartInventroy.Web.Controllers
-{
+{ 
     public class ProductsController : Controller
+
     {
-        [HttpGet]
+
+        private readonly ProductService _productService;
+        public ProductsController(ProductService productService)
+        {
+            _productService = productService;
+        }
+
+        [HttpGet("Products")]
         public IActionResult Index()
+        
         {
-            return View();
+
+            var products = _productService.GetAllProducts();
+            return View(products);
         }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        [HttpGet("Products/Edit/{id}")]
 
-        [HttpGet]
         public IActionResult Edit(int id)
         {
-            return View();
+            var prodcuts = _productService.GetProductById(id);
+            return View(prodcuts);
+
         }
 
-        [HttpGet]
+        [HttpPost("Products/Edit/{id}")]
+        public IActionResult Edit(int id, ProductListModel product)
+        {
+            product.ProductId = id;
+            if (ModelState.IsValid)
+            {
+                if(_productService.UpdateProduct(id, product))
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
+
+
+        [HttpGet("/Products/Details/{id}")]
         public IActionResult Details(int id)
         {
-            return View();
+            var product = _productService.GetProductByIdWithDetails(id);
+            return View(product);
         }
 
         [HttpGet]

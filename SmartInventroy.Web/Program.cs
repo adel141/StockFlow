@@ -1,7 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using SmartInventroy.BLL;
+using SmartInventroy.BLL.Service;
+using SmartInvetory.DAL;
+using SmartInvetory.DAL.EF;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SmartInventoryDbContext>(opt =>
+opt.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<DataAccessFactory>();
+
+
 
 var app = builder.Build();
 

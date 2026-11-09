@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SmartInventory.Web.Controllers
 {
+    [Route("Warehouse")]
     public class WarehousesController : Controller
     {
         [HttpGet]
@@ -17,7 +18,7 @@ namespace SmartInventory.Web.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("/Edit/{id}")]
         public IActionResult Edit(int id)
         {
             return View();
