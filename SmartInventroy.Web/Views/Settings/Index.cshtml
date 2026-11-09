@@ -6,12 +6,12 @@
     <div>
         <span class="eyebrow">WORKSPACE CONTROL</span>
         <h3>Settings & Preferences</h3>
-        <p>Personalize how StockFlow looks and behaves on this device.</p>
+        <p>Manage your workspace appearance and table behavior. Preferences are stored in this browser.</p>
     </div>
     <span class="settings-status"><i class="bi bi-shield-check"></i> Administrator</span>
 </div>
 
-<div class="row g-4 settings-grid">
+<div class="row g-3 settings-grid">
     <div class="col-xl-8">
         <section class="content-card settings-section">
             <div class="settings-section-heading">
@@ -93,9 +93,10 @@
             const pageSize = document.getElementById('defaultPageSize');
             const remember = document.getElementById('rememberSidebar');
             const feedback = document.getElementById('settingsFeedback');
+            const root = document.documentElement;
             const keys = { theme: 'stockflow-theme', accent: 'stockflow-accent', density: 'stockflow-table-density', pageSize: 'stockflow-page-size', remember: 'stockflow-remember-sidebar' };
             function read(key, fallback) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }
-            function setActive(selector, attribute, value) { document.querySelectorAll(selector).forEach(function (button) { button.classList.toggle('active', button.getAttribute(attribute) === value); }); }
+            function setActive(selector, attribute, value) { document.querySelectorAll(selector).forEach(button => button.classList.toggle('active', button.getAttribute(attribute) === value)); }
             let theme = read(keys.theme, 'light');
             let accent = read(keys.accent, '#477fe5');
             density.value = read(keys.density, 'comfortable');
@@ -103,25 +104,52 @@
             remember.checked = read(keys.remember, 'true') === 'true';
             setActive('[data-theme-choice]', 'data-theme-choice', theme);
             setActive('[data-accent]', 'data-accent', accent);
-            document.querySelectorAll('[data-theme-choice]').forEach(function (button) { button.addEventListener('click', function () { theme = button.dataset.themeChoice; setActive('[data-theme-choice]', 'data-theme-choice', theme); }); });
-            document.querySelectorAll('[data-accent]').forEach(function (button) { button.addEventListener('click', function () { accent = button.dataset.accent; setActive('[data-accent]', 'data-accent', accent); }); });
+            function applyPreview() {
+                root.dataset.theme = theme;
+                root.style.setProperty('--sf-primary', accent);
+                const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                root.classList.toggle('theme-dark', dark);
+                root.dataset.tableDensity = density.value;
+            }
+            function showFeedback(message, isError) {
+                feedback.textContent = message;
+                feedback.classList.add('show');
+                feedback.classList.toggle('text-danger', !!isError);
+            }
+            document.querySelectorAll('[data-theme-choice]').forEach(button => button.addEventListener('click', function () {
+                theme = this.dataset.themeChoice;
+                setActive('[data-theme-choice]', 'data-theme-choice', theme);
+                applyPreview();
+                showFeedback('Preview updated. Save preferences to keep these changes.');
+            }));
+            document.querySelectorAll('[data-accent]').forEach(button => button.addEventListener('click', function () {
+                accent = this.dataset.accent;
+                setActive('[data-accent]', 'data-accent', accent);
+                applyPreview();
+                showFeedback('Accent preview updated. Save preferences to keep it.');
+            }));
+            density.addEventListener('change', function () { applyPreview(); });
             document.getElementById('savePreferences').addEventListener('click', function () {
                 try {
-                    localStorage.setItem(keys.theme, theme); localStorage.setItem(keys.accent, accent);
-                    localStorage.setItem(keys.density, density.value); localStorage.setItem(keys.pageSize, pageSize.value);
+                    localStorage.setItem(keys.theme, theme);
+                    localStorage.setItem(keys.accent, accent);
+                    localStorage.setItem(keys.density, density.value);
+                    localStorage.setItem(keys.pageSize, pageSize.value);
                     localStorage.setItem(keys.remember, String(remember.checked));
-                    document.documentElement.dataset.theme = theme; document.documentElement.style.setProperty('--sf-primary', accent);
-                    const useDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                    document.documentElement.classList.toggle('theme-dark', useDark);
-                    document.documentElement.dataset.tableDensity = density.value;
-                    feedback.textContent = 'Preferences saved successfully.'; feedback.classList.add('show');
-                } catch { feedback.textContent = 'Browser storage is unavailable. Preferences could not be saved.'; feedback.classList.add('show', 'text-danger'); }
+                    applyPreview();
+                    showFeedback('Preferences saved successfully.');
+                } catch (error) {
+                    showFeedback('Browser storage is unavailable. Preferences could not be saved.', true);
+                }
             });
             document.getElementById('resetPreferences').addEventListener('click', function () {
                 theme = 'light'; accent = '#477fe5'; density.value = 'comfortable'; pageSize.value = '10'; remember.checked = true;
-                setActive('[data-theme-choice]', 'data-theme-choice', theme); setActive('[data-accent]', 'data-accent', accent);
+                setActive('[data-theme-choice]', 'data-theme-choice', theme);
+                setActive('[data-accent]', 'data-accent', accent);
+                applyPreview();
                 document.getElementById('savePreferences').click();
             });
+            applyPreview();
         });
     </script>
 }

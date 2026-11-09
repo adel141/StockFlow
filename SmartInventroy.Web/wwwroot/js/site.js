@@ -64,6 +64,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Account menu: keyboard and pointer accessible profile actions.
+    const profileToggle = document.getElementById('profileToggle');
+    const profileMenu = document.getElementById('profileMenu');
+    function closeProfileMenu() {
+        if (!profileMenu || !profileToggle) return;
+        profileMenu.hidden = true;
+        profileToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (profileToggle && profileMenu) {
+        profileToggle.addEventListener('click', function (event) {
+            event.stopPropagation();
+            const opening = profileMenu.hidden;
+            profileMenu.hidden = !opening;
+            profileToggle.setAttribute('aria-expanded', String(opening));
+        });
+        profileMenu.addEventListener('click', function (event) { event.stopPropagation(); });
+        document.addEventListener('click', closeProfileMenu);
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeProfileMenu();
+        });
+    }
+
     // Notification popover: load on open, refresh count on page load, close on outside click / Escape.
     const notificationToggle = document.getElementById("notificationToggle");
     const notificationPopover = document.getElementById("notificationPopover");
@@ -105,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 notificationPopover.hidden = true;
                 notificationToggle.setAttribute('aria-expanded', 'false');
                 closeSidebar();
+                closeProfileMenu();
             }
         });
     }

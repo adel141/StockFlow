@@ -1,94 +1,57 @@
 @model SmartInventory.Model.OperationsDto.DashboardDto
-@{ViewData["Title"]="Reports";var stock=(List<SmartInventory.Model.OperationsDto.StockRowDto>)ViewBag.Stock;var purchases=(List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Purchases;var sales=(List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Sales;}
-<div class="page-heading">
-<div>
-<h3>Reports</h3>
-<p>Current operational summaries.</p>
-</div>
-<button type="button" class="btn btn-outline-primary no-print" onclick="window.print()"><i class="bi bi-printer"></i> Print Report</button>
-</div>
-<div class="row g-3">
-<div class="col-md-3">
-<div class="content-card">
-<small>Products</small>
-<h3>@Model.ProductCount</h3>
-</div>
-</div>
-<div class="col-md-3">
-<div class="content-card">
-<small>Low stock records</small>
-<h3>@Model.LowStockCount</h3>
-</div>
-</div>
-<div class="col-md-3">
-<div class="content-card">
-<small>Purchase value</small>
-<h3>৳ @Model.PurchaseTotal.ToString("N2")</h3>
-</div>
-</div>
-<div class="col-md-3">
-<div class="content-card">
-<small>Sales value</small>
-<h3>৳ @Model.SalesTotal.ToString("N2")</h3>
-</div>
-</div>
-</div>
-<div class="content-card mt-3">
-<h5>Stock Report</h5>
-<table class="table js-data-table">
-<thead>
-<tr>
-<th>Product</th>
-<th>SKU</th>
-<th>Warehouse</th>
-<th>Quantity</th>
-<th>Reorder</th>
-</tr>
-</thead>
-<tbody>@foreach(var x in stock){<tr>
-<td>@x.ProductName</td>
-<td>@x.Sku</td>
-<td>@x.WarehouseName</td>
-<td>@x.Quantity</td>
-<td>@x.ReorderLevel</td>
-</tr>}</tbody>
-</table>
-</div>
-<div class="content-card mt-3">
-<h5>Purchase Orders</h5>
-<table class="table js-data-table">
-<thead>
-<tr>
-<th>Number</th>
-<th>Date</th>
-<th>Supplier</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>@foreach(var x in purchases){<tr>
-<td>@x.Number</td>
-<td>@x.Date.ToString("d")</td>
-<td>@x.PartyName</td>
-<td>@x.Total.ToString("N2")</td>
-</tr>}</tbody>
-</table>
-</div>
-<div class="content-card mt-3">
-<h5>Sales Orders</h5>
-<table class="table js-data-table">
-<thead>
-<tr>
-<th>Number</th>
-<th>Date</th>
-<th>Customer</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>@foreach(var x in sales){<tr>
-<td>@x.Number</td>
-<td>@x.Date.ToString("d")</td>
-<td>@x.PartyName</td>
-<td>@x.Total.ToString("N2")</td>
-</tr>}</tbody>
-</table>
+@{
+    ViewData["Title"] = "Reports";
+    var stock = (List<SmartInventory.Model.OperationsDto.StockRowDto>)ViewBag.Stock;
+    var purchases = (List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Purchases;
+    var sales = (List<SmartInventory.Model.OperationsDto.OrderRowDto>)ViewBag.Sales;
+    var generatedAt = DateTime.Now;
+}
+<div class="report-page">
+    <div class="page-heading report-heading">
+        <div>
+            <span class="eyebrow">BUSINESS INTELLIGENCE</span>
+            <h3>Reports & Analytics</h3>
+            <p>Inventory position and recent purchasing and sales activity.</p>
+        </div>
+        <div class="report-actions no-print">
+            <span class="report-generated"><i class="bi bi-clock-history"></i> Updated @generatedAt.ToString("dd MMM yyyy, hh:mm tt")</span>
+            <button type="button" class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print report</button>
+        </div>
+    </div>
+
+    <div class="report-summary-grid">
+        <article class="report-stat"><span class="report-stat-icon blue"><i class="bi bi-box-seam"></i></span><div><small>Products</small><strong>@Model.ProductCount</strong></div></article>
+        <article class="report-stat"><span class="report-stat-icon amber"><i class="bi bi-exclamation-triangle"></i></span><div><small>Low stock records</small><strong>@Model.LowStockCount</strong></div></article>
+        <article class="report-stat"><span class="report-stat-icon violet"><i class="bi bi-cart-plus"></i></span><div><small>Purchase value</small><strong>৳ @Model.PurchaseTotal.ToString("N2")</strong></div></article>
+        <article class="report-stat"><span class="report-stat-icon green"><i class="bi bi-graph-up-arrow"></i></span><div><small>Sales value</small><strong>৳ @Model.SalesTotal.ToString("N2")</strong></div></article>
+    </div>
+
+    <section class="content-card report-section">
+        <div class="report-section-heading"><div><h5>Stock position</h5><p>Current quantity by product and warehouse</p></div><span class="report-count">@stock.Count records</span></div>
+        <div class="table-responsive"><table class="table table-hover align-middle report-table">
+            <thead><tr><th>Product</th><th>SKU</th><th>Warehouse</th><th class="text-end">Quantity</th><th class="text-end">Reorder level</th><th>Status</th></tr></thead>
+            <tbody>
+            @if (stock.Count == 0) { <tr><td colspan="6" class="report-empty">No stock records found.</td></tr> }
+            else { foreach (var x in stock) { <tr><td class="fw-semibold">@x.ProductName</td><td>@x.Sku</td><td>@x.WarehouseName</td><td class="text-end">@x.Quantity</td><td class="text-end">@x.ReorderLevel</td><td>@if (x.IsLowStock) { <span class="report-status low">Low stock</span> } else { <span class="report-status good">Healthy</span> }</td></tr> } }
+            </tbody>
+        </table></div>
+    </section>
+
+    <div class="report-order-grid">
+        <section class="content-card report-section">
+            <div class="report-section-heading"><div><h5>Purchase orders</h5><p>Supplier receipts</p></div><span class="report-count">@purchases.Count orders</span></div>
+            <div class="table-responsive"><table class="table table-hover align-middle report-table"><thead><tr><th>Order</th><th>Date</th><th>Supplier</th><th class="text-end">Total</th></tr></thead><tbody>
+            @if (purchases.Count == 0) { <tr><td colspan="4" class="report-empty">No purchase orders found.</td></tr> }
+            else { foreach (var x in purchases) { <tr><td class="fw-semibold">@x.Number</td><td>@x.Date.ToString("dd MMM yy")</td><td>@x.PartyName</td><td class="text-end">৳ @x.Total.ToString("N2")</td></tr> } }
+            </tbody></table></div>
+        </section>
+        <section class="content-card report-section">
+            <div class="report-section-heading"><div><h5>Sales orders</h5><p>Customer orders</p></div><span class="report-count">@sales.Count orders</span></div>
+            <div class="table-responsive"><table class="table table-hover align-middle report-table"><thead><tr><th>Order</th><th>Date</th><th>Customer</th><th class="text-end">Total</th></tr></thead><tbody>
+            @if (sales.Count == 0) { <tr><td colspan="4" class="report-empty">No sales orders found.</td></tr> }
+            else { foreach (var x in sales) { <tr><td class="fw-semibold">@x.Number</td><td>@x.Date.ToString("dd MMM yy")</td><td>@x.PartyName</td><td class="text-end">৳ @x.Total.ToString("N2")</td></tr> } }
+            </tbody></table></div>
+        </section>
+    </div>
+    <div class="report-print-footer">StockFlow · Inventory Management Report · Generated @generatedAt.ToString("dd MMM yyyy, hh:mm tt")</div>
 </div>

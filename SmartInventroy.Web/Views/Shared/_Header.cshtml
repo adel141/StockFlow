@@ -20,19 +20,31 @@
 <div class="notification-loading">Loading notifications…</div>
 </div>
 </div>
-  <div class="profile">
-<div class="user-avatar">@((User.Identity?.Name ?? "U").Substring(0,1).ToUpper())</div>
-<div class="profile-details">
-<strong>@User.Identity?.Name</strong>
-<small>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</small>
-</div>
-</div>
-  <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
-<button class="btn btn-sm btn-outline-secondary" type="submit" title="Sign out">
-<i class="bi bi-box-arrow-right">
-</i>
-<span class="d-none d-lg-inline ms-1">Sign out</span>
-</button>
-</form>
+  <div class="profile-menu-wrap">
+   <button class="profile-trigger" id="profileToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="profileMenu">
+    <span class="user-avatar">@((User.Identity?.Name ?? "U").Substring(0,1).ToUpper())</span>
+    <span class="profile-details">
+     <strong>@User.Identity?.Name</strong>
+     <small>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</small>
+    </span>
+    <i class="bi bi-chevron-down profile-chevron"></i>
+   </button>
+   <div class="profile-menu" id="profileMenu" hidden>
+    <div class="profile-menu-heading">
+     <strong>@User.Identity?.Name</strong>
+     <small>@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</small>
+     <span>@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
+    </div>
+    <a asp-controller="Home" asp-action="Index"><i class="bi bi-grid"></i> Dashboard</a>
+    @if (User.IsInRole("Admin"))
+    {
+     <a asp-controller="Settings" asp-action="Index"><i class="bi bi-sliders"></i> Preferences & settings</a>
+     <a asp-controller="Users" asp-action="Index"><i class="bi bi-people"></i> Manage users</a>
+    }
+    <form asp-controller="Account" asp-action="Logout" method="post">
+     <button type="submit"><i class="bi bi-box-arrow-right"></i> Sign out</button>
+    </form>
+   </div>
+  </div>
  </div>
 </header>
