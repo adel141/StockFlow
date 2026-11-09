@@ -1,38 +1,4 @@
-@{
-    ViewData["Title"] = "Sale Details";
-}
-
-<div class="page-heading">
-    <div><h3>Sale Details</h3><p>Sales order SAL-0321.</p></div>
-    <a asp-action="Index" class="btn btn-light">Back to Sales</a>
-</div>
-
-<div class="content-card mb-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <div><h4>SAL-0321</h4><p class="text-muted mb-0">09 November 2026</p></div>
-        <span class="status warning">Processing</span>
-    </div>
-    <hr />
-    <div class="row g-3">
-        <div class="col-md-4"><small class="text-muted">Customer</small><p>ABC Corporation</p></div>
-        <div class="col-md-4"><small class="text-muted">Warehouse</small><p>Main Warehouse</p></div>
-        <div class="col-md-4"><small class="text-muted">Payment Method</small><p>Bank Transfer</p></div>
-    </div>
-</div>
-
-<div class="content-card">
-    <h5 class="mb-3">Sale Items</h5>
-    <div class="table-responsive">
-        <table class="table">
-            <thead><tr><th>Product</th><th>Quantity</th><th>Unit Price</th><th>Total</th></tr></thead>
-            <tbody>
-                <tr><td>Wireless Mouse</td><td>10</td><td>৳850</td><td>৳8,500</td></tr>
-                <tr><td>Mechanical Keyboard</td><td>2</td><td>৳3,500</td><td>৳7,000</td></tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="text-end">
-        <small class="text-muted">Grand Total</small>
-        <h4>৳15,500</h4>
-    </div>
-</div>
+@model SmartInventory.Model.OperationsDto.OrderDetailsDto
+@{ViewData["Title"]="Order Details";}
+<div class="page-heading"><div><h3>@Model.Number</h3><p>@Model.PartyName · @Model.WarehouseName · @Model.Date.ToString("dd MMM yyyy")</p></div><a asp-action="Index" class="btn btn-light">Back</a></div>
+<div class="content-card"><div class="d-flex justify-content-between"><strong>Status: @Model.Status</strong><strong>Total: ৳ @Model.Total.ToString("N2")</strong></div><hr/><table class="table"><thead><tr><th>Product</th><th>Quantity</th><th>Unit Price</th><th>Subtotal</th></tr></thead><tbody>@foreach(var x in Model.Items){<tr><td>@x.ProductName</td><td>@x.Quantity</td><td>@x.UnitPrice.ToString("N2")</td><td>@x.SubTotal.ToString("N2")</td></tr>}</tbody></table><p>@Model.Notes</p></div>

@@ -1,87 +1,10 @@
-@{
-    ViewData["Title"] = "Create Sale";
-}
-
-<div class="page-heading">
-    <div><h3>Create Sales Order</h3><p>Record a new sale for a customer.</p></div>
-    <a asp-action="Index" class="btn btn-light">Back</a>
-</div>
-
-<div class="content-card">
-    <form>
-        <h5 class="mb-3">Order Information</h5>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Customer</label>
-                <select class="form-select">
-                    <option>Select customer</option>
-                    <option>ABC Corporation</option>
-                    <option>XYZ Enterprise</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Warehouse</label>
-                <select class="form-select">
-                    <option>Main Warehouse</option>
-                    <option>Chattogram Warehouse</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Order Date</label>
-                <input type="date" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Payment Method</label>
-                <select class="form-select">
-                    <option>Cash</option>
-                    <option>Bank Transfer</option>
-                    <option>Mobile Banking</option>
-                    <option>Credit</option>
-                </select>
-            </div>
-        </div>
-
-        <hr class="my-4" />
-        <h5 class="mb-3">Sale Items</h5>
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead><tr><th>Product</th><th>Available Stock</th><th>Quantity</th><th>Unit Price</th><th>Total</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <select class="form-select">
-                                <option>Select product</option>
-                                <option>Wireless Mouse</option>
-                                <option>Mechanical Keyboard</option>
-                            </select>
-                        </td>
-                        <td>120</td>
-                        <td><input type="number" class="form-control" value="2" /></td>
-                        <td><input type="number" class="form-control" value="850" /></td>
-                        <td>৳1,700</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="row justify-content-end">
-            <div class="col-md-4">
-                <div class="d-flex justify-content-between"><span>Subtotal</span><strong>৳1,700</strong></div>
-                <div class="d-flex justify-content-between mt-2"><span>Discount</span><strong>৳0</strong></div>
-                <hr />
-                <div class="d-flex justify-content-between"><strong>Total</strong><h5>৳1,700</h5></div>
-            </div>
-        </div>
-
-        <div class="mt-3">
-            <label class="form-label">Notes</label>
-            <textarea class="form-control" rows="2"></textarea>
-        </div>
-
-        <div class="d-flex justify-content-end gap-2 mt-4">
-            <a asp-action="Index" class="btn btn-light">Cancel</a>
-            <button class="btn btn-primary">Create Sales Order</button>
-        </div>
-    </form>
-</div>
+@model SmartInventroy.Web.Models.Operations.OrderFormViewModel
+@{ViewData["Title"]="Create Sale";}
+<div class="page-heading"><div><h3>Create Sale</h3><p>Complete a sale and deduct stock.</p></div><a asp-action="Index" class="btn btn-light">Back</a></div>
+<div class="content-card"><form asp-action="Create" method="post"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="row g-3"><div class="col-md-4"><label class="form-label">Customer</label><select asp-for="PartyId" asp-items="Model.Parties" class="form-select"><option value="">Walk-in customer</option></select></div><div class="col-md-4"><label asp-for="WarehouseId" class="form-label">Warehouse</label><select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-select"><option value="">Select warehouse</option></select></div><div class="col-md-4"><label asp-for="OrderDate" class="form-label">Order Date</label><input asp-for="OrderDate" type="date" class="form-control"/></div><div class="col-12"><label asp-for="Notes" class="form-label">Notes</label><textarea asp-for="Notes" class="form-control"></textarea></div></div><hr/><h5>Order Items</h5><div class="table-responsive"><table class="table" id="lines"><thead><tr><th>Product</th><th>Quantity</th><th>Unit Price</th><th></th></tr></thead><tbody id="lineBody"></tbody></table></div><button type="button" class="btn btn-outline-secondary btn-sm" id="addLine">Add product</button><div class="d-flex justify-content-end mt-4"><button class="btn btn-primary">Complete Sale</button></div></form></div>
+@section Scripts {<script>
+const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Products.Select(x => new { value=x.Value, text=x.Text })));
+const body=document.getElementById('lineBody');
+function addLine(){const i=body.children.length;const tr=document.createElement('tr');let opts='<option value="">Select product</option>'+products.map(p=>`<option value="${p.value}">${p.text}</option>`).join('');tr.innerHTML=`<td><select name="Items[${i}].ProductId" class="form-select" required>${opts}</select></td><td><input name="Items[${i}].Quantity" type="number" min="1" value="1" class="form-control" required/></td><td><input name="Items[${i}].UnitPrice" type="number" min="0" step="0.01" value="0" class="form-control" required/></td><td><button type="button" class="btn btn-sm btn-outline-danger">Remove</button></td>`;tr.querySelector('button').onclick=()=>{tr.remove();[...body.children].forEach((r,n)=>r.querySelectorAll('input,select').forEach(el=>el.name=el.name.replace(/Items\[\d+\]/,`Items[${n}]`)));};body.appendChild(tr);}
+document.getElementById('addLine').addEventListener('click',addLine);addLine();
+</script>}
